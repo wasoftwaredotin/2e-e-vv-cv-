@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillCourse 3D - Advance Career Courses</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Three.js for 3D Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            pink: '#ff4081',
+                            blue: '#00b0ff',
+                            lightBlue: '#80d8ff',
+                            white: '#ffffff'
+                        }
+                    },
+                    keyframes: {
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-5px)' },
+                            '20%, 40%, 60%, 80%': { transform: 'translateX(5px)' }
+                        }
+                    },
+                    animation: {
+                        shake: 'shake 0.5s ease-in-out',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            color: #1e293b; /* Dark slate for readability */
+            /* Colorful Animated Background */
+            background: linear-gradient(-45deg, #ffffff, #ffe4e1, #e0f7fa, #ffc0cb, #bbdefb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 3D Canvas fixed at background */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.7; /* Blend with CSS gradient */
+        }
+        
+        /* Light Glassmorphism styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-15px) scale(1.03) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 20px 40px rgba(255, 64, 129, 0.2), 0 10px 20px rgba(0, 176, 255, 0.2);
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 64, 129, 0.5);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(to right, #ff4081, #00b0ff, #ff4081);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #ff4081, #00b0ff);
+            border-radius: 5px;
+        }
+
+        /* ---------------- SCROLL ANIMATIONS ---------------- */
+        .scroll-anim {
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .anim-slide-up { transform: translateY(80px); }
+        .anim-slide-down { transform: translateY(-80px); }
+        .anim-slide-left { transform: translateX(-100px); }
+        .anim-slide-right { transform: translateX(100px); }
+        .anim-zoom { transform: scale(0.5); }
+        .anim-rotate { transform: rotate(-15deg) scale(0.8); }
+        .anim-flip { transform: perspective(400px) rotateY(90deg); }
+
+        .scroll-anim.is-visible {
+            opacity: 1;
+            transform: translate(0) scale(1) rotate(0) rotateY(0);
+        }
+
+        @keyframes float-complex {
+            0% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(2deg); }
+            66% { transform: translateY(10px) rotate(-2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float-complex 6s ease-in-out infinite;
+        }
+        
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+
+        /* Slide Effect for Course Details */
+        .course-details {
+            max-height: 4rem; /* Shows about 2-3 lines initially */
+            overflow: hidden;
+            position: relative;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .course-details.expanded {
+            max-height: 500px; /* Expands smoothly */
+        }
+
+        /* Fade out text at the bottom when collapsed */
+        .course-details::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2rem;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.9));
+            transition: opacity 0.3s ease;
+        }
+
+        .course-details.expanded::after {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-pink selection:text-white">
+
+    <!-- 3D Background Canvas -->
+    <div id="canvas-container"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 top-0 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 cursor-pointer scroll-anim anim-slide-down is-visible">
+                    <span class="text-3xl font-extrabold tracking-wider text-gray-900">Skill<span class="text-brand-pink">Course</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8 scroll-anim anim-slide-down is-visible delay-100">
+                        <a href="#home" class="hover:text-brand-pink text-gray-700 px-3 py-2 rounded-md text-sm font-bold transition-colors">Home</a>
+                        <a href="#why-skills" class="hover:text-brand-blue text-gray-700 px-3 py-2 rounded-md text-sm font-bold transition-colors">Future Benefits</a>
+                        <a href="#courses" class="hover:text-brand-pink text-gray-700 px-3 py-2 rounded-md text-sm font-bold transition-colors">Trending Courses</a>
+                        <button class="enroll-btn bg-gradient-to-r from-brand-pink to-brand-blue text-white px-6 py-2 rounded-full text-sm font-bold transition-all hover:scale-105 hover:shadow-[0_10px_20px_rgba(255,64,129,0.3)]">Enroll Now</button>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-brand-pink focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex flex-col justify-center min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            
+            <div class="scroll-anim anim-zoom delay-100 inline-block glass-card px-6 py-2 rounded-full mb-6 border-brand-pink/30 text-brand-pink text-sm md:text-base font-bold tracking-wide shadow-sm bg-white/50">
+                <i class="fas fa-magic mr-2 animate-pulse"></i> Duniya Badal Rahi Hai, Apne Career Ko Upgrade Karein!
+            </div>
+            
+            <h1 class="scroll-anim anim-slide-up delay-200 text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight text-gray-900">
+                High-Paying Skills Sikhein <br/>
+                <span class="text-gradient animate-float inline-block mt-2">Apna Future Secure Karein</span>
+            </h1>
+            
+            <p class="scroll-anim anim-slide-up delay-300 mt-4 max-w-2xl mx-auto text-xl text-gray-600 mb-10 font-medium">
+                Aaj ke digital zamane mein sirf college ki degree kafi nahi hai. Top trending skill courses sikhein aur apna career khud design karein. Badi MNCs aur foreign clients ab sirf aapse aisi hi real-world skills chahte hain.
+            </p>
+            
+            <div class="scroll-anim anim-zoom delay-400 flex flex-col sm:flex-row justify-center gap-6">
+                <a href="#courses" class="bg-gradient-to-r from-brand-pink to-brand-blue text-white px-8 py-4 rounded-full text-lg font-bold hover:shadow-[0_15px_30px_rgba(0,176,255,0.4)] hover:-translate-y-2 transition-all duration-300">
+                    Explore Courses <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Why Learn These Skills? (Marketing & Benefits) -->
+    <section id="why-skills" class="py-20 relative z-10 bg-white/40 backdrop-blur-md border-t border-b border-white/50 shadow-[0_0_50px_rgba(255,255,255,0.5)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-anim anim-slide-down">
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">Aaj Ke Time Pe Ye <span class="text-gradient">Skills Zaroori Kyun Hain?</span></h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto font-medium">Market tezi se badal raha hai. Jo skills kal chalte the, aaj unki demand kam hai. Jaaniye ye trending courses aapko kaise career boost de sakte hain.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Benefit 1 -->
+                <div class="glass-card p-8 text-center scroll-anim anim-slide-up group">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fas fa-globe-americas text-3xl text-brand-blue"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Foreign & Remote Jobs</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed">
+                        Ab aapko apne shehar tak seemit rehne ki zaroorat nahi. Ye skills sikhne ke baad aap <strong>US, UK aur Dubai</strong> jaise desho ki badi companies ke liye ghar baithe remote kaam (Work from Home) kar sakte hain aur <strong>Dollars ($)</strong> mein kamayi kar sakte hain.
+                    </p>
+                </div>
+
+                <!-- Benefit 2 -->
+                <div class="glass-card p-8 text-center scroll-anim anim-slide-up delay-100 group">
+                    <div class="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center mx-auto mb-6 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fas fa-briefcase text-3xl text-brand-pink"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">MNC Hiring & Top Packages</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed">
+                        Badi private companies (Google, Microsoft, Top Agencies) aajkal marksheet se zyada <strong>Practical Skills</strong> dekhti hain. Agar aapko advanced Digital Marketing, UI/UX ya Coding aati hai, toh aap easily <strong>Lakho ka High-Paying Package</strong> crack kar sakte hain.
+                    </p>
+                </div>
+
+                <!-- Benefit 3 -->
+                <div class="glass-card p-8 text-center scroll-anim anim-slide-up delay-200 group">
+                    <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fas fa-chart-line text-3xl text-green-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Freelancing & Unlimited Income</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed">
+                        Agar aap kisi boss ke under kaam nahi karna chahte, toh apna khud ka business start karein! Ye courses aapko Upwork aur Fiverr par clients lana sikhayenge. Aapki mehnat ke hisaab se yahan <strong>Income ki koi upper limit nahi hai</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="py-20 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-anim anim-slide-down">
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-gray-900">Trending <span class="text-gradient">Skill Courses</span></h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto font-medium">Niche diye gaye top courses ko explore karein. Ye sirf classes nahi, balki aapka career badalne ka ek golden ticket hain.</p>
+            </div>
+
+            <!-- Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                
+                <!-- Course 1 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-left overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=400&q=80" alt="YouTube Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-red-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fab fa-youtube text-2xl text-red-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">YouTube Mastery</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            Aapka shauk ab ek billion-dollar industry ban chuka hai! Zero se Hero banne ka safar. Is advanced course mein hum aapko Viral script writing, SEO optimization, Clickable Thumbnail design aur channel monetization ke saare secret tools ki A to Z guide denge. Apne channel ko ek brand banayein, badi sponsorships crack karein, aur Adsense se har mahine lakho rupaye ki passive income generate karein. 
+                        </div>
+                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-rotate delay-100 overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1611262588024-d12430b98920?auto=format&fit=crop&w=400&q=80" alt="Instagram Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-pink-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fab fa-instagram text-2xl text-pink-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Instagram Growth</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            Instagram par time waste karna band karein aur isey paise kamane ki machine banayein. Reels ke algorithm ko hack karne ka proper raaz samjhein! Hum aapko sikhayenge ki organic followers kaise badhayein, personal branding kaise karein, aur high-paying brand deals/collaborations kaise easily crack karein. Ye course aapko ek professional influencer ya page manager bana dega jiski badi agencies ko hamesha zaroorat hoti hai.
+                        </div>
+                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-zoom delay-200 overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=400&q=80" alt="Blogging Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-green-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fas fa-blog text-2xl text-green-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Blogging & SEO</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            Agar aap bina camera pe aaye lakho kamana chahte hain, toh Blogging aapke liye best hai. Google ke top page pe apni website aur articles ko rank karne ke master secrets sikhein. Keyword research, backlinks, aur content planning ke zariye, aap Adsense aur Affiliate Marketing se ek strong passive income ka srot bana sakte hain. Ek baar kaam karein aur sote hue bhi paise kamayein. Badi media companies bhi aise SEO experts ko hire karne ke liye laakhon ka package deti hain.
+                        </div>
+                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-right delay-300 overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=400&q=80" alt="Freelancing Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fas fa-laptop-house text-2xl text-blue-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Freelancing Blueprint</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            9-to-5 job ko chodiye aur apne khud ke boss baniye. Is course mein hum aapko sikhayenge Upwork aur Fiverr jaisi global websites par Top-Rated Freelancer kaise bante hain. Apna winning portfolio banayein, US, UK aur Australia ke premium international clients ko pitch bhejein aur high-paying projects close karein. Freelancing se log aajkal aaram se mahine ka $2000-$5000 (Lakho Rupaye) kama rahe hain, wo bhi apne ghar ke comfort se!
+                        </div>
+                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 5 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-flip overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=400&q=80" alt="Video Editing Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fas fa-video text-2xl text-purple-600"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Video Editing Pro</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            Aaj kal har youtuber, brand aur company ko high-quality video editors chahiye. Premiere Pro aur After Effects jaise industry-standard tools seekhein aur boring raw footage ko ek engaging cinematic masterpiece mein convert karna sikhein. Transition, color grading, motion graphics, aur sound design se leke advanced text effects tak sab shamil hai. Professional video editors ko MNCs bohot high salary package offer karti hain aur international freelancing me iski demand massive hai!
+                        </div>
+                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 6 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-up delay-100 overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=400&q=80" alt="Digital Marketing Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fas fa-bullhorn text-2xl text-yellow-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Digital Marketing</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            Har ek business chahe chota ho ya bada, sab online sales chahte hain. Is course mein Facebook Ads, Google Ads, Email Marketing, aur Funnel Building par practically mastery hasil karein. Ek ₹500 ke ad se ₹5000 ka revenue generate karne ka secret seekhein. Aap apna khud ka Marketing Agency start kar sakte hain ya top brands mein as a 'Marketing Head' job paa sakte hain jiska shuruati package hi bohot badhiya hota hai.
+                        </div>
+                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 7 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-up delay-200 lg:col-start-2 xl:col-start-auto overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&q=80" alt="AI Tools Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-teal-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fas fa-robot text-2xl text-teal-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">AI Tools & Prompts</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            "AI un logon ki job kha jayega jinhe AI chalana nahi aata." Ye course aapko ChatGPT, Midjourney, aur upcoming saare trending AI tools ka absolute master bana dega. Complex prompts likhna seekhein jisse aap ghanto ka technical, writing ya design ka kaam minutes mein automatically karwa saken. Corporate duniya mein aur remote foreign jobs mein ek AI expert ki value aaj kal sabse highest paid hai!
+                        </div>
+                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 8 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-up delay-300 overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" alt="Web Development Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-orange-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fas fa-code text-2xl text-orange-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Web Development</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            Har startup aur company ki jaan, unki premium website aur apps! Coding sikhiye ekdam scratch se (HTML, CSS, JS) aur advance MERN Stack (MongoDB, Express, React, Node) tak. Stunning, super fast, aur modern websites banane ka hunar haasil karein. As a Full Stack Developer, aapko IT hub (Bangalore, Pune) ya foreign countries se lakho ke job offers bina kisi mushkil ke mil jayenge. Ye skill technical career ka gateway hai.
+                        </div>
+                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 9 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-zoom md:col-start-1 lg:col-start-2 xl:col-start-auto overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=400&q=80" alt="UI/UX Design Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fas fa-palette text-2xl text-indigo-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">UI/UX & Graphics</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            Jab app ya website dikhne mein sundar aur use karne mein easy hoti hai, toh user khush hota hai. Yahi kaam hai ek UI/UX Designer ka! Figma, Photoshop, aur Illustrator jese premium softwares seekhein. World-class layouts, logos, aur interfaces banayein. Har modern tech company, Amazon se leke Zomato tak, top level UI/UX designers ko lakhon package de kar hire karti hai. Ye aane wale daur ka sabse cool profession hai!
+                        </div>
+                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 10 -->
+                <div class="glass-card flex flex-col group scroll-anim anim-zoom delay-100 md:col-start-2 lg:col-start-3 xl:col-start-auto overflow-hidden">
+                    <div class="relative w-full h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1455390582262-044cdead27d8?auto=format&fit=crop&w=400&q=80" alt="Copywriting Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-cyan-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
+                            <i class="fas fa-pen-nib text-2xl text-cyan-500"></i>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
+                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Copywriting Mastery</h3>
+                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
+                            Sabdo ki takat ko pehchane. Aise magical words likhna sikhein jo kisi ko bhi product kharidne pe majboor kar de. High-converting Facebook Ads, compelling emails aur persuasive landing pages ka complete blueprint. Ek badhiya copywriter ek single page likhne ka 50,000 se 1 Lakh rupaye tak charge karta hai. US market mein is skill ki sabse zyada talash ki ja rahi hai!
+                        </div>
+                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="about" class="py-20 relative z-10 bg-white/30 backdrop-blur-md border-t border-b border-white/40 shadow-[0_0_50px_rgba(255,255,255,0.5)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2 scroll-anim anim-slide-right">
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-gray-900">Traditional Study Se <br><span class="text-gradient">Advance Skills Tak</span></h2>
+                    <p class="text-gray-700 text-lg mb-6 leading-relaxed font-medium">
+                        Aaj kal har company un logon ko dhoond rahi hai jinke paas practical skills hain. Hamare courses aapko sirf theory nahi, balki real-world applications sikhate hain. Ek naya tajurba aur behtareen future aapka intezar kar raha hai.
+                    </p>
+                    <ul class="space-y-4 text-gray-800 font-semibold">
+                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform"><i class="fas fa-check-circle text-brand-pink mr-3 text-2xl drop-shadow-md"></i> 100% Practical & Project Based Learning</li>
+                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform delay-100"><i class="fas fa-check-circle text-brand-blue mr-3 text-2xl drop-shadow-md"></i> Hindi & Simple English (Hinglish) mein easy explanations</li>
+                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform delay-200"><i class="fas fa-check-circle text-brand-pink mr-3 text-2xl drop-shadow-md"></i> Lifetime Access & Community Support</li>
+                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform delay-300"><i class="fas fa-check-circle text-brand-blue mr-3 text-2xl drop-shadow-md"></i> Certificate of Completion for your Resume</li>
+                    </ul>
+                </div>
+                
+                <div class="md:w-1/2 relative scroll-anim anim-slide-left">
+                    <!-- 3D Dashboard representation -->
+                    <div class="glass-card p-6 w-full transform rotate-y-12 rotate-x-6 perspective-1000 shadow-[0_30px_60px_rgba(0,176,255,0.3)] bg-white/60">
+                        <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-4">
+                            <div class="flex gap-2">
+                                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                            </div>
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-widest">Student Portal</span>
+                        </div>
+                        <div class="space-y-5">
+                            <div class="h-10 bg-gradient-to-r from-brand-pink/20 to-brand-blue/20 rounded-lg w-3/4 animate-pulse"></div>
+                            <div class="h-4 bg-gray-200 rounded w-full"></div>
+                            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+                            <div class="grid grid-cols-2 gap-4 mt-6">
+                                <div class="h-24 bg-gradient-to-br from-brand-pink/10 to-white rounded-xl border border-brand-pink/30 flex items-center justify-center flex-col shadow-inner hover:scale-105 transition-transform">
+                                    <span class="text-3xl font-extrabold text-brand-pink"><i class="fas fa-star"></i></span>
+                                    <span class="text-sm font-bold text-gray-600 mt-1">Trending Courses</span>
+                                </div>
+                                <div class="h-24 bg-gradient-to-br from-brand-blue/10 to-white rounded-xl border border-brand-blue/30 flex items-center justify-center flex-col shadow-inner hover:scale-105 transition-transform">
+                                    <span class="text-3xl font-extrabold text-brand-blue">24/7</span>
+                                    <span class="text-sm font-bold text-gray-600 mt-1">Live Support</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Success Stories & Trust Guarantee (Social Proof) -->
+    <section id="testimonials" class="py-20 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-anim anim-slide-down">
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">Hamare Students Ki <span class="text-gradient">Success Stories</span></h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto font-medium">Dekhiye kaise SkillCourse ne hazaron students ka career aur zindagi badal di hai. Agla number aapka ho sakta hai!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass-card p-8 relative scroll-anim anim-slide-up group">
+                    <div class="absolute -top-6 left-8 text-5xl text-brand-pink opacity-20"><i class="fas fa-quote-left"></i></div>
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Student" class="w-16 h-16 rounded-full border-2 border-brand-pink object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-900">Rahul Sharma</h4>
+                            <p class="text-xs text-brand-pink font-semibold">Freelancer, ₹1Lakh+/month</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 font-medium italic">"College ke baad job nahi mil rahi thi. Yahan se Freelancing aur UI/UX seekha, aaj mere paas US aur Dubai ke 4 clients hain. Life set hai!"</p>
+                    <div class="mt-4 flex text-yellow-500 text-sm">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-card p-8 relative scroll-anim anim-slide-up delay-100 group">
+                    <div class="absolute -top-6 left-8 text-5xl text-brand-blue opacity-20"><i class="fas fa-quote-left"></i></div>
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="Student" class="w-16 h-16 rounded-full border-2 border-brand-blue object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-900">Priya Singh</h4>
+                            <p class="text-xs text-brand-blue font-semibold">Digital Marketing Manager</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 font-medium italic">"Mera marketing course ka experience amazing tha. Practical ads run karna seekha, aur abhi main ek top agency me as a manager kaam kar rahi hu."</p>
+                    <div class="mt-4 flex text-yellow-500 text-sm">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-card p-8 relative scroll-anim anim-slide-up delay-200 group">
+                    <div class="absolute -top-6 left-8 text-5xl text-brand-pink opacity-20"><i class="fas fa-quote-left"></i></div>
+                    <div class="flex items-center mb-6">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" alt="Student" class="w-16 h-16 rounded-full border-2 border-green-500 object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-900">Amit Verma</h4>
+                            <p class="text-xs text-green-600 font-semibold">YouTuber (100k+ Subs)</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 font-medium italic">"YouTube mastery course ne mere channel ko boost kiya. SEO aur thumbnail ki tricks se mere views 10x badh gaye. Highly recommended!"</p>
+                    <div class="mt-4 flex text-yellow-500 text-sm">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust / Guarantee Badge -->
+            <div class="mt-16 bg-white/50 backdrop-blur-md rounded-3xl p-8 border border-white shadow-[0_15px_40px_rgba(0,0,0,0.05)] text-center scroll-anim anim-zoom flex flex-col md:flex-row items-center justify-center gap-8 group hover:bg-white/70 transition-colors">
+                <div class="w-24 h-24 bg-gradient-to-br from-brand-pink to-brand-blue rounded-full flex items-center justify-center shadow-lg text-white text-4xl transform group-hover:scale-110 transition-transform">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="text-left max-w-lg">
+                    <h3 class="text-2xl font-extrabold text-gray-900 mb-2">100% Risk-Free Guarantee</h3>
+                    <p class="text-gray-700 font-medium">Agar aapko lagta hai ki ye course aapke liye nahi hai, toh 7 din ke andar apne pure paise wapas lijiye. <strong>No questions asked.</strong> Humari priority aapki growth hai.</p>
+                </div>
+                <button class="enroll-btn bg-gradient-to-r from-brand-pink to-brand-blue text-white px-8 py-4 rounded-xl text-lg font-bold transition-all hover:scale-105 hover:shadow-[0_10px_30px_rgba(255,64,129,0.4)] whitespace-nowrap shadow-md">
+                    Claim Risk-Free Offer
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: FAQ Section (Frequently Asked Questions) -->
+    <section id="faq" class="py-20 relative z-10 bg-white/20 backdrop-blur-sm border-t border-white/40 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 scroll-anim anim-slide-down">
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">Aksar Puche Jaane Wale <span class="text-gradient">Sawal (FAQs)</span></h2>
+                <p class="text-gray-600 text-lg font-medium">Enroll karne se pehle koi doubt hai? Yahan aapke har sawal ka seedha jawab hai.</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item glass-card p-6 cursor-pointer scroll-anim anim-slide-up hover:!translate-y-0 hover:!scale-100">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-extrabold text-gray-900 text-lg">1. Kya mujhe pehle se koi knowledge aani chahiye?</h3>
+                        <div class="w-8 h-8 rounded-full bg-brand-pink/10 flex items-center justify-center text-brand-pink transition-transform duration-300 faq-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300">
+                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4">Bilkul nahi! Hamare sabhi courses <strong>Absolute Beginner to Advance</strong> level tak design kiye gaye hain. Agar aapko is field ka 'A, B, C' bhi nahi aata, tab bhi aap asaani se seekh jayenge.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item glass-card p-6 cursor-pointer scroll-anim anim-slide-up delay-100 hover:!translate-y-0 hover:!scale-100">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-extrabold text-gray-900 text-lg">2. Course ki validity (Access) kitne dino tak rahegi?</h3>
+                        <div class="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue transition-transform duration-300 faq-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300">
+                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4">Aapko <strong>Lifetime Access</strong> milta hai! Ek baar enroll karne ke baad aap in premium videos ko kabhi bhi, kitni bhi baar dekh sakte hain. Future mein aane wale saare updates bhi free milenge.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item glass-card p-6 cursor-pointer scroll-anim anim-slide-up delay-200 hover:!translate-y-0 hover:!scale-100">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-extrabold text-gray-900 text-lg">3. Kya course complete karne par Certificate milega?</h3>
+                        <div class="w-8 h-8 rounded-full bg-brand-pink/10 flex items-center justify-center text-brand-pink transition-transform duration-300 faq-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300">
+                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4">Haan, definitely! Har course ke successful completion par aapko ek industry-recognized aur <strong>Verified Certificate</strong> milega jise aap apne Resume aur LinkedIn profile par proudly showcase kar sakte hain.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-item glass-card p-6 cursor-pointer scroll-anim anim-slide-up delay-300 hover:!translate-y-0 hover:!scale-100">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-extrabold text-gray-900 text-lg">4. Kya main in courses ko apne Mobile par dekh sakta hu?</h3>
+                        <div class="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue transition-transform duration-300 faq-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300">
+                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4">Haan 100%! Hamara platform puri tarah se mobile friendly hai. Laptop na ho tab bhi aap travel karte waqt ya aaram karte hue apne smartphone se asaani se seekh sakte hain.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 pt-16 pb-8 bg-white/50 backdrop-blur-lg border-t border-white mt-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 scroll-anim anim-slide-up">
+                <div class="col-span-1 md:col-span-2">
+                    <span class="text-3xl font-extrabold tracking-wider text-gray-900 mb-4 block">Skill<span class="text-brand-pink">Course</span></span>
+                    <p class="text-gray-600 font-medium mt-4 max-w-sm">Apne sapno ko udaan dein. Aaj hi high-income digital skills sikhein aur apne career ko naye mukam par le jayein.</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-extrabold mb-4 text-gray-900">Quick Links</h4>
+                    <ul class="space-y-2 font-semibold text-gray-600">
+                        <li><a href="#" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-angle-right mr-2 text-sm text-brand-blue"></i> Home</a></li>
+                        <li><a href="#courses" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-angle-right mr-2 text-sm text-brand-blue"></i> All Courses</a></li>
+                        <li><a href="#" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-angle-right mr-2 text-sm text-brand-blue"></i> Success Stories</a></li>
+                        <li><a href="#" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-angle-right mr-2 text-sm text-brand-blue"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-extrabold mb-4 text-gray-900">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-brand-pink hover:bg-brand-pink hover:text-white hover:-translate-y-1 transition-all text-xl"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white hover:-translate-y-1 transition-all text-xl"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-brand-blue hover:bg-brand-blue hover:text-white hover:-translate-y-1 transition-all text-xl"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-gray-800 hover:bg-gray-900 hover:text-white hover:-translate-y-1 transition-all text-xl"><i class="fab fa-x-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center text-gray-500 font-medium text-sm border-t border-gray-300 pt-8 scroll-anim anim-zoom">
+                &copy; 2026 SkillCourse. Designed for a Bright Future.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <!-- Modal Content -->
+        <div id="login-modal-content" class="bg-white/90 backdrop-blur-xl p-8 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] w-[90%] max-w-md border border-white relative transform scale-95 transition-transform duration-300">
+            <!-- Close Button -->
+            <button id="close-modal" class="absolute top-5 right-5 text-gray-400 hover:text-brand-pink text-2xl transition-colors outline-none focus:outline-none">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back!</h2>
+                <p class="text-gray-600 font-medium">Course mein enroll karne ke liye login karein.</p>
+            </div>
+
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="email" required class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:border-brand-pink focus:ring-4 focus:ring-brand-pink/20 outline-none transition-all bg-white shadow-inner" placeholder="Aapka email...">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" required class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/20 outline-none transition-all bg-white shadow-inner" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <!-- Error Message Alert -->
+                <div id="login-error" class="hidden bg-red-100/80 border border-red-200 text-red-600 text-sm font-bold p-3 rounded-lg text-center animate-pulse shadow-sm">
+                    <i class="fas fa-exclamation-circle mr-1 text-lg"></i> Invalid Email ya Password. Kripya sahi details dalein.
+                </div>
+
+                <button type="submit" class="w-full mt-2 py-3.5 bg-gradient-to-r from-brand-pink to-brand-blue text-white rounded-xl font-extrabold text-lg hover:shadow-[0_10px_20px_rgba(255,64,129,0.3)] hover:-translate-y-1 transition-all duration-300 flex justify-center items-center">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Login & Enroll
+                </button>
+                
+                <p class="text-center text-sm text-gray-500 mt-4 font-medium">
+                    Naye user hain? <a href="#" class="text-brand-blue hover:text-brand-pink transition-colors font-bold underline">Account banayein</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts for Animations, 3D & Modals -->
+    <script>
+        // ----------------------------------------------------
+        // "SEE MORE" BUTTON LOGIC (Marketing descriptions)
+        // ----------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            const seeMoreBtns = document.querySelectorAll('.see-more-btn');
+            
+            seeMoreBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const contentDiv = this.previousElementSibling; // The div with .course-details
+                    
+                    if(contentDiv.classList.contains('expanded')) {
+                        contentDiv.classList.remove('expanded');
+                        this.innerHTML = 'See More <i class="fas fa-chevron-down"></i>';
+                    } else {
+                        contentDiv.classList.add('expanded');
+                        this.innerHTML = 'See Less <i class="fas fa-chevron-up"></i>';
+                    }
+                });
+            });
+
+            // ----------------------------------------------------
+            // FAQ ACCORDION LOGIC
+            // ----------------------------------------------------
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const answer = item.querySelector('.faq-answer');
+                    const icon = item.querySelector('.faq-icon');
+                    const iconShape = icon.querySelector('i');
+                    
+                    // Close all other FAQs
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.querySelector('.faq-answer').style.maxHeight = null;
+                            otherItem.querySelector('.faq-icon i').classList.remove('fa-minus');
+                            otherItem.querySelector('.faq-icon i').classList.add('fa-plus');
+                        }
+                    });
+
+                    // Toggle current FAQ
+                    if (answer.style.maxHeight) {
+                        answer.style.maxHeight = null;
+                        iconShape.classList.remove('fa-minus');
+                        iconShape.classList.add('fa-plus');
+                    } else {
+                        answer.style.maxHeight = answer.scrollHeight + "px";
+                        iconShape.classList.remove('fa-plus');
+                        iconShape.classList.add('fa-minus');
+                    }
+                });
+            });
+        });
+
+        // ----------------------------------------------------
+        // 0. LOGIN MODAL LOGIC
+        // ----------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginModal = document.getElementById('login-modal');
+            const loginModalContent = document.getElementById('login-modal-content');
+            const closeModal = document.getElementById('close-modal');
+            const loginForm = document.getElementById('login-form');
+            const loginError = document.getElementById('login-error');
+            const enrollBtns = document.querySelectorAll('.enroll-btn');
+
+            // Open Modal Function
+            const openModal = () => {
+                loginModal.classList.remove('hidden');
+                setTimeout(() => {
+                    loginModal.classList.remove('opacity-0');
+                    loginModalContent.classList.remove('scale-95');
+                    loginModalContent.classList.add('scale-100');
+                }, 10);
+            };
+
+            // Close Modal Function
+            const closeLoginModal = () => {
+                loginModal.classList.add('opacity-0');
+                loginModalContent.classList.remove('scale-100');
+                loginModalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    loginModal.classList.add('hidden');
+                    loginError.classList.add('hidden');
+                    loginForm.reset();
+                }, 300);
+            };
+
+            enrollBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            });
+
+            closeModal.addEventListener('click', closeLoginModal);
+            
+            loginModal.addEventListener('click', (e) => {
+                if(e.target === loginModal) {
+                    closeLoginModal();
+                }
+            });
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                loginError.classList.remove('hidden');
+                loginModalContent.classList.add('animate-shake');
+                setTimeout(() => {
+                    loginModalContent.classList.remove('animate-shake');
+                }, 500);
+            });
+        });
+
+        // ----------------------------------------------------
+        // 1. SCROLL INTERSECTION OBSERVER (For scroll animations)
+        // ----------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, observerOptions);
+
+            const animElements = document.querySelectorAll('.scroll-anim');
+            animElements.forEach(el => observer.observe(el));
+        });
+
+        // ----------------------------------------------------
+        // 2. THREE.JS ADVANCED BACKGROUND LOGIC
+        // ----------------------------------------------------
+        window.onload = function() {
+            const scene = new THREE.Scene();
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const pointLight1 = new THREE.PointLight(0xff4081, 2, 50);
+            pointLight1.position.set(5, 5, 5);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0x00b0ff, 2, 50);
+            pointLight2.position.set(-5, -5, 5);
+            scene.add(pointLight2);
+
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 2000;
+            const posArray = new Float32Array(particlesCount * 3);
+            const colorArray = new Float32Array(particlesCount * 3);
+
+            const colorPink = new THREE.Color(0xff4081);
+            const colorBlue = new THREE.Color(0x00b0ff);
+            const colorWhite = new THREE.Color(0xffffff);
+            const colors = [colorPink, colorBlue, colorWhite];
+
+            for(let i = 0; i < particlesCount * 3; i+=3) {
+                posArray[i] = (Math.random() - 0.5) * 30;
+                posArray[i+1] = (Math.random() - 0.5) * 30;
+                posArray[i+2] = (Math.random() - 0.5) * 20 - 5;
+
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                colorArray[i] = randomColor.r;
+                colorArray[i+1] = randomColor.g;
+                colorArray[i+2] = randomColor.b;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.05,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            const objects = [];
+            
+            const geometries = [
+                new THREE.TorusKnotGeometry(1, 0.3, 100, 16),
+                new THREE.IcosahedronGeometry(1.5, 0),
+                new THREE.OctahedronGeometry(1.2, 0),
+                new THREE.SphereGeometry(1, 32, 32),
+                new THREE.ConeGeometry(1, 2, 32)
+            ];
+
+            const materials = [
+                new THREE.MeshPhysicalMaterial({ 
+                    color: 0xff4081, metalness: 0.1, roughness: 0.1, transmission: 0.9, thickness: 0.5, transparent: true
+                }),
+                new THREE.MeshPhysicalMaterial({ 
+                    color: 0x00b0ff, metalness: 0.1, roughness: 0.1, transmission: 0.9, thickness: 0.5, transparent: true
+                }),
+                new THREE.MeshStandardMaterial({ 
+                    color: 0xffffff, wireframe: true, transparent: true, opacity: 0.3 
+                })
+            ];
+
+            for(let i=0; i<15; i++) {
+                const geo = geometries[Math.floor(Math.random() * geometries.length)];
+                const mat = materials[Math.floor(Math.random() * materials.length)];
+                const mesh = new THREE.Mesh(geo, mat);
+                
+                mesh.position.x = (Math.random() - 0.5) * 25;
+                mesh.position.y = (Math.random() - 0.5) * 25;
+                mesh.position.z = (Math.random() - 0.5) * 15 - 10;
+                
+                mesh.rotation.x = Math.random() * Math.PI;
+                mesh.rotation.y = Math.random() * Math.PI;
+
+                scene.add(mesh);
+                objects.push({
+                    mesh: mesh,
+                    rotSpeedX: (Math.random() - 0.5) * 0.02,
+                    rotSpeedY: (Math.random() - 0.5) * 0.02,
+                    moveSpeedX: (Math.random() - 0.5) * 0.01,
+                    moveSpeedY: (Math.random() - 0.5) * 0.01,
+                    floatSpeed: (Math.random() * 0.02) + 0.01,
+                    initialY: mesh.position.y,
+                    time: Math.random() * 100
+                });
+            }
+
+            camera.position.z = 8;
+
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX);
+                mouseY = (event.clientY - windowHalfY);
+            });
+
+            let scrollY = window.scrollY;
+            window.addEventListener('scroll', () => {
+                scrollY = window.scrollY;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                targetX = mouseX * 0.001;
+                targetY = mouseY * 0.001;
+
+                pointLight1.position.x = mouseX * 0.01;
+                pointLight1.position.y = -mouseY * 0.01;
+                
+                particlesMesh.rotation.y += 0.0005;
+                particlesMesh.rotation.x += 0.0002;
+                particlesMesh.position.y = scrollY * 0.002;
+                particlesMesh.position.x += (targetX - particlesMesh.position.x) * 0.05;
+
+                objects.forEach(obj => {
+                    obj.mesh.rotation.x += obj.rotSpeedX;
+                    obj.mesh.rotation.y += obj.rotSpeedY;
+                    
+                    obj.time += obj.floatSpeed;
+                    obj.mesh.position.x += obj.moveSpeedX;
+                    
+                    const scrollOffset = scrollY * 0.005;
+                    obj.mesh.position.y = obj.initialY + Math.sin(obj.time) * 1.5 + scrollOffset;
+
+                    if(obj.mesh.position.x > 15) obj.mesh.position.x = -15;
+                    if(obj.mesh.position.x < -15) obj.mesh.position.x = 15;
+                });
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            const cards = document.querySelectorAll('.glass-card:not(#login-modal-content)');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -5; 
+                    const rotateY = ((x - centerX) / centerX) * 5;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
+            });
+        };
+    </script>
+</body>
+</html>
