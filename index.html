@@ -120,39 +120,9 @@
             border-radius: 5px;
         }
 
-        /* ---------------- SCROLL ANIMATIONS ---------------- */
-        .scroll-anim {
-            opacity: 0;
-            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
-        }
-
-        .anim-slide-up { transform: translateY(80px); }
-        .anim-slide-down { transform: translateY(-80px); }
-        .anim-slide-left { transform: translateX(-100px); }
-        .anim-slide-right { transform: translateX(100px); }
-        .anim-zoom { transform: scale(0.5); }
-        .anim-rotate { transform: rotate(-15deg) scale(0.8); }
-        .anim-flip { transform: perspective(400px) rotateY(90deg); }
-
-        .scroll-anim.is-visible {
-            opacity: 1;
-            transform: translate(0) scale(1) rotate(0) rotateY(0);
-        }
-
-        @keyframes float-complex {
-            0% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-15px) rotate(2deg); }
-            66% { transform: translateY(10px) rotate(-2deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-        .animate-float {
-            animation: float-complex 6s ease-in-out infinite;
-        }
-        
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; }
-        .delay-400 { transition-delay: 400ms; }
+        /* ---------------- ANIMATIONS DISABLED (Stable Sections) ---------------- */
+        .scroll-anim { opacity: 1 !important; transform: none !important; transition: none !important; }
+        .anim-slide-up, .anim-slide-down, .anim-slide-left, .anim-slide-right, .anim-zoom, .anim-rotate, .anim-flip { transform: none !important; }
 
         /* Slide Effect for Course Details */
         .course-details {
@@ -197,15 +167,24 @@
                 <div class="flex-shrink-0 cursor-pointer scroll-anim anim-slide-down is-visible">
                     <span class="text-3xl font-extrabold tracking-wider text-gray-900">Skill<span class="text-brand-pink">Course</span></span>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8 scroll-anim anim-slide-down is-visible delay-100">
-                        <a href="#home" class="hover:text-brand-pink text-gray-700 px-3 py-2 rounded-md text-sm font-bold transition-colors">Home</a>
-                        <a href="#why-skills" class="hover:text-brand-blue text-gray-700 px-3 py-2 rounded-md text-sm font-bold transition-colors">Future Benefits</a>
-                        <a href="#courses" class="hover:text-brand-pink text-gray-700 px-3 py-2 rounded-md text-sm font-bold transition-colors">Trending Courses</a>
-                        <button class="enroll-btn bg-gradient-to-r from-brand-pink to-brand-blue text-white px-6 py-2 rounded-full text-sm font-bold transition-all hover:scale-105 hover:shadow-[0_10px_20px_rgba(255,64,129,0.3)]">Enroll Now</button>
-                    </div>
+                <div class="hidden md:flex items-center space-x-6 scroll-anim anim-slide-down is-visible delay-100">
+                    <a href="#home" class="lang-text hover:text-brand-pink text-gray-700 px-3 py-2 rounded-md text-sm font-bold transition-colors" data-en="Home" data-hi="Home">Home</a>
+                    <a href="#why-skills" class="lang-text hover:text-brand-blue text-gray-700 px-3 py-2 rounded-md text-sm font-bold transition-colors" data-en="Future Benefits" data-hi="Future Benefits">Future Benefits</a>
+                    <a href="#courses" class="lang-text hover:text-brand-pink text-gray-700 px-3 py-2 rounded-md text-sm font-bold transition-colors" data-en="Trending Courses" data-hi="Trending Courses">Trending Courses</a>
+                    
+                    <!-- Language Toggle Button -->
+                    <button id="lang-toggle-btn" class="flex items-center bg-gray-200/50 rounded-full p-1 shadow-inner border border-gray-300 ml-2 hover:bg-gray-200 transition-colors">
+                        <span class="lang-en-badge px-3 py-1 rounded-full bg-white shadow text-brand-blue font-bold text-xs transition-all">EN</span>
+                        <span class="lang-hi-badge px-3 py-1 rounded-full text-gray-500 font-bold text-xs transition-all">HI</span>
+                    </button>
+
+                    <button class="enroll-btn lang-text bg-gradient-to-r from-brand-pink to-brand-blue text-white px-6 py-2 rounded-full text-sm font-bold transition-all hover:scale-105 hover:shadow-[0_10px_20px_rgba(255,64,129,0.3)]" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</button>
                 </div>
-                <div class="-mr-2 flex md:hidden">
+                <div class="-mr-2 flex md:hidden items-center gap-4">
+                    <button id="lang-toggle-btn-mob" class="flex items-center bg-gray-200/50 rounded-full p-1 shadow-inner border border-gray-300">
+                        <span class="lang-en-badge px-2 py-1 rounded-full bg-white shadow text-brand-blue font-bold text-xs transition-all">EN</span>
+                        <span class="lang-hi-badge px-2 py-1 rounded-full text-gray-500 font-bold text-xs transition-all">HI</span>
+                    </button>
                     <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-brand-pink focus:outline-none">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
@@ -215,25 +194,25 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex flex-col justify-center min-h-screen">
+    <section id="home" class="relative pt-28 pb-12 lg:pt-48 lg:pb-32 overflow-hidden flex flex-col justify-center min-h-[75vh] lg:min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
             
-            <div class="scroll-anim anim-zoom delay-100 inline-block glass-card px-6 py-2 rounded-full mb-6 border-brand-pink/30 text-brand-pink text-sm md:text-base font-bold tracking-wide shadow-sm bg-white/50">
-                <i class="fas fa-magic mr-2 animate-pulse"></i> Duniya Badal Rahi Hai, Apne Career Ko Upgrade Karein!
+            <div class="scroll-anim anim-zoom delay-100 inline-block glass-card px-4 py-1.5 lg:px-6 lg:py-2 rounded-full mb-4 lg:mb-6 border-brand-pink/30 text-brand-pink text-xs md:text-base font-bold tracking-wide shadow-sm bg-white/50">
+                <i class="fas fa-magic mr-2 animate-pulse"></i> <span class="lang-text" data-en="The World is Changing, Upgrade Your Career!" data-hi="Duniya Badal Rahi Hai, Apne Career Ko Upgrade Karein!">The World is Changing, Upgrade Your Career!</span>
             </div>
             
-            <h1 class="scroll-anim anim-slide-up delay-200 text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight text-gray-900">
-                High-Paying Skills Sikhein <br/>
-                <span class="text-gradient animate-float inline-block mt-2">Apna Future Secure Karein</span>
+            <h1 class="scroll-anim anim-slide-up delay-200 font-extrabold tracking-tight mb-4 lg:mb-6 leading-tight text-gray-900">
+                <span class="lang-text block text-4xl sm:text-5xl md:text-6xl lg:text-7xl" data-en="Learn Top Trending Skills" data-hi="Top Trending Skills Sikhein">Learn Top Trending Skills</span>
+                <span class="text-gradient inline-block mt-2 lang-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl" data-en="Secure Your Future" data-hi="Apna Future Secure Karein">Secure Your Future</span>
             </h1>
             
-            <p class="scroll-anim anim-slide-up delay-300 mt-4 max-w-2xl mx-auto text-xl text-gray-600 mb-10 font-medium">
-                Aaj ke digital zamane mein sirf college ki degree kafi nahi hai. Top trending skill courses sikhein aur apna career khud design karein. Badi MNCs aur foreign clients ab sirf aapse aisi hi real-world skills chahte hain.
+            <p class="scroll-anim anim-slide-up delay-300 mt-2 lg:mt-4 max-w-2xl mx-auto text-base lg:text-xl text-gray-600 mb-8 lg:mb-10 font-medium lang-text" data-en="In today's digital era, a college degree alone is not enough. Learn top trending skill courses and design your own career. Top MNCs and foreign clients now only seek such real-world skills." data-hi="Aaj ke digital zamane mein sirf college ki degree kafi nahi hai. Top trending skill courses sikhein aur apna career khud design karein. Badi MNCs aur foreign clients ab sirf aapse aisi hi real-world skills chahte hain.">
+                In today's digital era, a college degree alone is not enough. Learn top trending skill courses and design your own career. Top MNCs and foreign clients now only seek such real-world skills.
             </p>
             
-            <div class="scroll-anim anim-zoom delay-400 flex flex-col sm:flex-row justify-center gap-6">
-                <a href="#courses" class="bg-gradient-to-r from-brand-pink to-brand-blue text-white px-8 py-4 rounded-full text-lg font-bold hover:shadow-[0_15px_30px_rgba(0,176,255,0.4)] hover:-translate-y-2 transition-all duration-300">
-                    Explore Courses <i class="fas fa-arrow-right ml-2"></i>
+            <div class="scroll-anim anim-zoom delay-400 flex flex-col sm:flex-row justify-center gap-4 lg:gap-6">
+                <a href="#courses" class="bg-gradient-to-r from-brand-pink to-brand-blue text-white px-6 py-3 lg:px-8 lg:py-4 rounded-full text-base lg:text-lg font-bold hover:shadow-[0_15px_30px_rgba(0,176,255,0.4)] hover:-translate-y-2 transition-all duration-300">
+                    <span class="lang-text" data-en="Explore Courses" data-hi="Course Dekhein">Explore Courses</span> <i class="fas fa-arrow-right ml-2"></i>
                 </a>
             </div>
         </div>
@@ -243,8 +222,11 @@
     <section id="why-skills" class="py-20 relative z-10 bg-white/40 backdrop-blur-md border-t border-b border-white/50 shadow-[0_0_50px_rgba(255,255,255,0.5)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 scroll-anim anim-slide-down">
-                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">Aaj Ke Time Pe Ye <span class="text-gradient">Skills Zaroori Kyun Hain?</span></h2>
-                <p class="text-gray-600 text-lg max-w-3xl mx-auto font-medium">Market tezi se badal raha hai. Jo skills kal chalte the, aaj unki demand kam hai. Jaaniye ye trending courses aapko kaise career boost de sakte hain.</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">
+                    <span class="lang-text" data-en="Why Are These" data-hi="Aaj Ke Time Pe Ye">Why Are These</span> 
+                    <span class="text-gradient lang-text" data-en="Skills Essential Today?" data-hi="Skills Zaroori Kyun Hain?">Skills Essential Today?</span>
+                </h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto font-medium lang-text" data-en="The market is changing rapidly. The skills that worked yesterday are in low demand today. Discover how these trending courses can give your career a massive boost." data-hi="Market tezi se badal raha hai. Jo skills kal chalte the, aaj unki demand kam hai. Jaaniye ye trending courses aapko kaise career boost de sakte hain.">The market is changing rapidly. The skills that worked yesterday are in low demand today. Discover how these trending courses can give your career a massive boost.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -253,9 +235,9 @@
                     <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6 shadow-md group-hover:scale-110 transition-transform">
                         <i class="fas fa-globe-americas text-3xl text-brand-blue"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Foreign & Remote Jobs</h3>
-                    <p class="text-gray-600 font-medium leading-relaxed">
-                        Ab aapko apne shehar tak seemit rehne ki zaroorat nahi. Ye skills sikhne ke baad aap <strong>US, UK aur Dubai</strong> jaise desho ki badi companies ke liye ghar baithe remote kaam (Work from Home) kar sakte hain aur <strong>Dollars ($)</strong> mein kamayi kar sakte hain.
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900 lang-text" data-en="Foreign & Remote Jobs" data-hi="Foreign & Remote Jobs">Foreign & Remote Jobs</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed lang-text" data-en="You no longer need to be limited to your city. After learning these skills, you can work remotely for top companies in countries like the US, UK, and Dubai, and earn in Dollars ($)." data-hi="Ab aapko apne shehar tak seemit rehne ki zaroorat nahi. Ye skills sikhne ke baad aap US, UK aur Dubai jaise desho ki badi companies ke liye ghar baithe remote kaam (Work from Home) kar sakte hain aur Dollars ($) mein kamayi kar sakte hain.">
+                        You no longer need to be limited to your city. After learning these skills, you can work remotely for top companies in countries like the US, UK, and Dubai, and earn in Dollars ($).
                     </p>
                 </div>
 
@@ -264,9 +246,9 @@
                     <div class="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center mx-auto mb-6 shadow-md group-hover:scale-110 transition-transform">
                         <i class="fas fa-briefcase text-3xl text-brand-pink"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3 text-gray-900">MNC Hiring & Top Packages</h3>
-                    <p class="text-gray-600 font-medium leading-relaxed">
-                        Badi private companies (Google, Microsoft, Top Agencies) aajkal marksheet se zyada <strong>Practical Skills</strong> dekhti hain. Agar aapko advanced Digital Marketing, UI/UX ya Coding aati hai, toh aap easily <strong>Lakho ka High-Paying Package</strong> crack kar sakte hain.
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900 lang-text" data-en="MNC Hiring & Top Packages" data-hi="MNC Hiring & Top Packages">MNC Hiring & Top Packages</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed lang-text" data-en="Top private companies (Google, Microsoft, Top Agencies) nowadays value Practical Skills more than marksheets. If you know advanced Digital Marketing, UI/UX, or Coding, you can easily crack a high-paying package." data-hi="Badi private companies (Google, Microsoft, Top Agencies) aajkal marksheet se zyada Practical Skills dekhti hain. Agar aapko advanced Digital Marketing, UI/UX ya Coding aati hai, toh aap easily Lakho ka High-Paying Package crack kar sakte hain.">
+                        Top private companies (Google, Microsoft, Top Agencies) nowadays value Practical Skills more than marksheets. If you know advanced Digital Marketing, UI/UX, or Coding, you can easily crack a high-paying package.
                     </p>
                 </div>
 
@@ -275,9 +257,9 @@
                     <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6 shadow-md group-hover:scale-110 transition-transform">
                         <i class="fas fa-chart-line text-3xl text-green-500"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-3 text-gray-900">Freelancing & Unlimited Income</h3>
-                    <p class="text-gray-600 font-medium leading-relaxed">
-                        Agar aap kisi boss ke under kaam nahi karna chahte, toh apna khud ka business start karein! Ye courses aapko Upwork aur Fiverr par clients lana sikhayenge. Aapki mehnat ke hisaab se yahan <strong>Income ki koi upper limit nahi hai</strong>.
+                    <h3 class="text-2xl font-bold mb-3 text-gray-900 lang-text" data-en="Freelancing & Unlimited Income" data-hi="Freelancing & Unlimited Income">Freelancing & Unlimited Income</h3>
+                    <p class="text-gray-600 font-medium leading-relaxed lang-text" data-en="If you don't want to work under a boss, start your own business! These courses will teach you how to get clients on Upwork and Fiverr. Based on your hard work, there is no upper limit to your income here." data-hi="Agar aap kisi boss ke under kaam nahi karna chahte, toh apna khud ka business start karein! Ye courses aapko Upwork aur Fiverr par clients lana sikhayenge. Aapki mehnat ke hisaab se yahan Income ki koi upper limit nahi hai.">
+                        If you don't want to work under a boss, start your own business! These courses will teach you how to get clients on Upwork and Fiverr. Based on your hard work, there is no upper limit to your income here.
                     </p>
                 </div>
             </div>
@@ -288,200 +270,596 @@
     <section id="courses" class="py-20 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 scroll-anim anim-slide-down">
-                <h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-gray-900">Trending <span class="text-gradient">Skill Courses</span></h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto font-medium">Niche diye gaye top courses ko explore karein. Ye sirf classes nahi, balki aapka career badalne ka ek golden ticket hain.</p>
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-gray-900">Trending <span class="text-gradient lang-text" data-en="Skill Courses" data-hi="Skill Courses">Skill Courses</span></h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto font-medium lang-text" data-en="Explore the top courses below. These are not just classes, but a golden ticket to transform your career." data-hi="Niche diye gaye top courses ko explore karein. Ye sirf classes nahi, balki aapka career badalne ka ek golden ticket hain.">Explore the top courses below. These are not just classes, but a golden ticket to transform your career.</p>
             </div>
 
             <!-- Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 
                 <!-- Course 1 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-slide-left overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=400&q=80" alt="YouTube Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-red-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fab fa-youtube text-2xl text-red-500"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-left overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(255,64,129,0.15)] relative">
+                    <!-- Badge -->
+                    <div class="absolute top-4 right-4 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg lang-text tracking-wide" data-en="BESTSELLER" data-hi="BESTSELLER">BESTSELLER</div>
+
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=400&q=80" alt="YouTube Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-red-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fab fa-youtube text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">YouTube Mastery</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            Aapka shauk ab ek billion-dollar industry ban chuka hai! Zero se Hero banne ka safar. Is advanced course mein hum aapko Viral script writing, SEO optimization, Clickable Thumbnail design aur channel monetization ke saare secret tools ki A to Z guide denge. Apne channel ko ek brand banayein, badi sponsorships crack karein, aur Adsense se har mahine lakho rupaye ki passive income generate karein. 
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">4.8</span>
+                            <span class="text-gray-500 text-xs font-semibold">(15,240 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="YouTube Mastery & Monetization" data-hi="YouTube Mastery & Monetization">YouTube Mastery & Monetization</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 24 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 15 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-green-500 mr-1"></i> <span class="lang-text" data-en="Beginner" data-hi="Beginner">Beginner</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="Your passion has now become a billion-dollar industry! The journey from Zero to Hero. In this advanced course, we will provide you with an A to Z guide on Viral script writing, SEO optimization, Clickable Thumbnail design, and all secret tools for channel monetization. Build your channel as a brand, crack major sponsorships, and generate thousands in passive income every month from AdSense." data-hi="Aapka shauk ab ek billion-dollar industry ban chuka hai! Zero se Hero banne ka safar. Is advanced course mein hum aapko Viral script writing, SEO optimization, Clickable Thumbnail design aur channel monetization ke saare secret tools ki A to Z guide denge. Apne channel ko ek brand banayein, badi sponsorships crack karein, aur Adsense se har mahine lakho rupaye ki passive income generate karein.">
+                            Your passion has now become a billion-dollar industry! The journey from Zero to Hero. In this advanced course, we will provide you with an A to Z guide on Viral script writing, SEO optimization, Clickable Thumbnail design, and all secret tools for channel monetization. Build your channel as a brand, crack major sponsorships, and generate thousands in passive income every month from AdSense.
+                        </div>
+                        <button class="see-more-btn text-brand-pink text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=Amit+Verma&background=ff4081&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">Amit Verma</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹4,999</p>
+                                <p class="text-xl font-black text-brand-pink leading-none">₹999</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-brand-pink transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Course 2 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-rotate delay-100 overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1611262588024-d12430b98920?auto=format&fit=crop&w=400&q=80" alt="Instagram Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-pink-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fab fa-instagram text-2xl text-pink-500"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-rotate delay-100 overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(0,176,255,0.15)] relative">
+                    <!-- Badge -->
+                    <div class="absolute top-4 right-4 z-20 bg-gradient-to-r from-blue-400 to-indigo-500 text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg lang-text tracking-wide" data-en="TOP RATED" data-hi="TOP RATED">TOP RATED</div>
+
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1611262588024-d12430b98920?auto=format&fit=crop&w=400&q=80" alt="Instagram Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-pink-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fab fa-instagram text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Instagram Growth</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            Instagram par time waste karna band karein aur isey paise kamane ki machine banayein. Reels ke algorithm ko hack karne ka proper raaz samjhein! Hum aapko sikhayenge ki organic followers kaise badhayein, personal branding kaise karein, aur high-paying brand deals/collaborations kaise easily crack karein. Ye course aapko ek professional influencer ya page manager bana dega jiski badi agencies ko hamesha zaroorat hoti hai.
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">4.9</span>
+                            <span class="text-gray-500 text-xs font-semibold">(18,900 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="Instagram Growth Secrets" data-hi="Instagram Growth Secrets">Instagram Growth Secrets</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 18 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 10 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-yellow-500 mr-1"></i> <span class="lang-text" data-en="All Levels" data-hi="All Levels">All Levels</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="Stop wasting time on Instagram and turn it into a money-making machine. Understand the real secret to hacking the Reels algorithm! We will teach you how to grow organic followers, build a personal brand, and easily crack high-paying brand deals/collaborations. This course will make you a professional influencer or page manager highly sought after by top agencies." data-hi="Instagram par time waste karna band karein aur isey paise kamane ki machine banayein. Reels ke algorithm ko hack karne ka proper raaz samjhein! Hum aapko sikhayenge ki organic followers kaise badhayein, personal branding kaise karein, aur high-paying brand deals/collaborations kaise easily crack karein. Ye course aapko ek professional influencer ya page manager bana dega jiski badi agencies ko hamesha zaroorat hoti hai.">
+                            Stop wasting time on Instagram and turn it into a money-making machine. Understand the real secret to hacking the Reels algorithm! We will teach you how to grow organic followers, build a personal brand, and easily crack high-paying brand deals/collaborations. This course will make you a professional influencer or page manager highly sought after by top agencies.
+                        </div>
+                        <button class="see-more-btn text-brand-blue text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=Priya+S&background=00b0ff&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">Priya Singh</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹3,499</p>
+                                <p class="text-xl font-black text-brand-blue leading-none">₹799</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-brand-blue transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Course 3 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-zoom delay-200 overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=400&q=80" alt="Blogging Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-green-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fas fa-blog text-2xl text-green-500"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-zoom delay-200 overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(34,197,94,0.15)] relative">
+                    <!-- Badge -->
+                    <div class="absolute top-4 right-4 z-20 bg-gradient-to-r from-green-400 to-emerald-600 text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg lang-text tracking-wide" data-en="TRENDING" data-hi="TRENDING">TRENDING</div>
+
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=400&q=80" alt="Blogging Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-green-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fas fa-blog text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Blogging & SEO</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            Agar aap bina camera pe aaye lakho kamana chahte hain, toh Blogging aapke liye best hai. Google ke top page pe apni website aur articles ko rank karne ke master secrets sikhein. Keyword research, backlinks, aur content planning ke zariye, aap Adsense aur Affiliate Marketing se ek strong passive income ka srot bana sakte hain. Ek baar kaam karein aur sote hue bhi paise kamayein. Badi media companies bhi aise SEO experts ko hire karne ke liye laakhon ka package deti hain.
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">4.2</span>
+                            <span class="text-gray-500 text-xs font-semibold">(8,100 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="Blogging & Advanced SEO" data-hi="Blogging & Advanced SEO">Blogging & Advanced SEO</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 30 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 20 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-red-500 mr-1"></i> <span class="lang-text" data-en="Advance" data-hi="Advance">Advance</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="If you want to earn thousands without facing the camera, Blogging is best for you. Learn the master secrets of ranking your website and articles on the first page of Google. Through keyword research, backlinks, and content planning, you can build a strong passive income stream from AdSense and Affiliate Marketing. Work once and earn while you sleep. Top media companies also offer massive packages to hire such SEO experts." data-hi="Agar aap bina camera pe aaye lakho kamana chahte hain, toh Blogging aapke liye best hai. Google ke top page pe apni website aur articles ko rank karne ke master secrets sikhein. Keyword research, backlinks, aur content planning ke zariye, aap Adsense aur Affiliate Marketing se ek strong passive income ka srot bana sakte hain. Ek baar kaam karein aur sote hue bhi paise kamayein. Badi media companies bhi aise SEO experts ko hire karne ke liye laakhon ka package deti hain.">
+                            If you want to earn thousands without facing the camera, Blogging is best for you. Learn the master secrets of ranking your website and articles on the first page of Google. Through keyword research, backlinks, and content planning, you can build a strong passive income stream from AdSense and Affiliate Marketing. Work once and earn while you sleep. Top media companies also offer massive packages to hire such SEO experts.
+                        </div>
+                        <button class="see-more-btn text-green-600 text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=SEO+Expert&background=22c55e&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">SEO Expert</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹5,999</p>
+                                <p class="text-xl font-black text-green-600 leading-none">₹1,299</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-green-500 transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Course 4 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-slide-right delay-300 overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=400&q=80" alt="Freelancing Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fas fa-laptop-house text-2xl text-blue-500"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-right delay-300 overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(59,130,246,0.15)] relative">
+                    <!-- Badge -->
+                    <div class="absolute top-4 right-4 z-20 bg-gradient-to-r from-brand-pink to-brand-blue text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg lang-text tracking-wide" data-en="NEW LAUNCH" data-hi="NEW LAUNCH">NEW LAUNCH</div>
+
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=400&q=80" alt="Freelancing Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-blue-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fas fa-laptop-house text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Freelancing Blueprint</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            9-to-5 job ko chodiye aur apne khud ke boss baniye. Is course mein hum aapko sikhayenge Upwork aur Fiverr jaisi global websites par Top-Rated Freelancer kaise bante hain. Apna winning portfolio banayein, US, UK aur Australia ke premium international clients ko pitch bhejein aur high-paying projects close karein. Freelancing se log aajkal aaram se mahine ka $2000-$5000 (Lakho Rupaye) kama rahe hain, wo bhi apne ghar ke comfort se!
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">4.7</span>
+                            <span class="text-gray-500 text-xs font-semibold">(22,000 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="Freelancing Blueprint" data-hi="Freelancing Blueprint">Freelancing Blueprint</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 12 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 8 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-green-500 mr-1"></i> <span class="lang-text" data-en="Beginner" data-hi="Beginner">Beginner</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="Quit the 9-to-5 job and become your own boss. In this course, we will teach you how to become a Top-Rated Freelancer on global websites like Upwork and Fiverr. Build your winning portfolio, pitch to premium international clients from the US, UK, and Australia, and close high-paying projects. People are easily earning $2000-$5000 a month through freelancing, right from the comfort of their homes!" data-hi="9-to-5 job ko chodiye aur apne khud ke boss baniye. Is course mein hum aapko sikhayenge Upwork aur Fiverr jaisi global websites par Top-Rated Freelancer kaise bante hain. Apna winning portfolio banayein, US, UK aur Australia ke premium international clients ko pitch bhejein aur high-paying projects close karein. Freelancing se log aajkal aaram se mahine ka $2000-$5000 (Lakho Rupaye) kama rahe hain, wo bhi apne ghar ke comfort se!">
+                            Quit the 9-to-5 job and become your own boss. In this course, we will teach you how to become a Top-Rated Freelancer on global websites like Upwork and Fiverr. Build your winning portfolio, pitch to premium international clients from the US, UK, and Australia, and close high-paying projects. People are easily earning $2000-$5000 a month through freelancing, right from the comfort of their homes!
+                        </div>
+                        <button class="see-more-btn text-blue-600 text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=Top+Freelancer&background=3b82f6&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">Top Freelancer</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹3,999</p>
+                                <p class="text-xl font-black text-blue-600 leading-none">₹899</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-blue-600 transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Course 5 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-flip overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=400&q=80" alt="Video Editing Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fas fa-video text-2xl text-purple-600"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-flip overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(168,85,247,0.15)] relative">
+                    <!-- Badge -->
+                    <div class="absolute top-4 right-4 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg lang-text tracking-wide" data-en="BESTSELLER" data-hi="BESTSELLER">BESTSELLER</div>
+
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=400&q=80" alt="Video Editing Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-purple-600/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fas fa-video text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Video Editing Pro</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            Aaj kal har youtuber, brand aur company ko high-quality video editors chahiye. Premiere Pro aur After Effects jaise industry-standard tools seekhein aur boring raw footage ko ek engaging cinematic masterpiece mein convert karna sikhein. Transition, color grading, motion graphics, aur sound design se leke advanced text effects tak sab shamil hai. Professional video editors ko MNCs bohot high salary package offer karti hain aur international freelancing me iski demand massive hai!
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">4.9</span>
+                            <span class="text-gray-500 text-xs font-semibold">(28,500 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="Video Editing Pro (Premiere)" data-hi="Video Editing Pro (Premiere)">Video Editing Pro (Premiere)</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 40 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 25 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-yellow-500 mr-1"></i> <span class="lang-text" data-en="All Levels" data-hi="All Levels">All Levels</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="Today, every YouTuber, brand, and company needs high-quality video editors. Learn industry-standard tools like Premiere Pro and After Effects, and learn how to convert boring raw footage into an engaging cinematic masterpiece. From transitions, color grading, motion graphics, and sound design to advanced text effects, everything is included. Professional video editors are offered very high salary packages by MNCs and there is massive demand in international freelancing!" data-hi="Aaj kal har youtuber, brand aur company ko high-quality video editors chahiye. Premiere Pro aur After Effects jaise industry-standard tools seekhein aur boring raw footage ko ek engaging cinematic masterpiece mein convert karna sikhein. Transition, color grading, motion graphics, aur sound design se leke advanced text effects tak sab shamil hai. Professional video editors ko MNCs bohot high salary package offer karti hain aur international freelancing me iski demand massive hai!">
+                            Today, every YouTuber, brand, and company needs high-quality video editors. Learn industry-standard tools like Premiere Pro and After Effects, and learn how to convert boring raw footage into an engaging cinematic masterpiece. From transitions, color grading, motion graphics, and sound design to advanced text effects, everything is included. Professional video editors are offered very high salary packages by MNCs and there is massive demand in international freelancing!
+                        </div>
+                        <button class="see-more-btn text-purple-600 text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=VFX+Master&background=a855f7&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">VFX Master</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹6,999</p>
+                                <p class="text-xl font-black text-purple-600 leading-none">₹1,499</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-purple-600 transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Course 6 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-slide-up delay-100 overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=400&q=80" alt="Digital Marketing Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fas fa-bullhorn text-2xl text-yellow-500"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-up delay-100 overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(234,179,8,0.15)] relative">
+                    
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=400&q=80" alt="Digital Marketing Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-yellow-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fas fa-bullhorn text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Digital Marketing</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            Har ek business chahe chota ho ya bada, sab online sales chahte hain. Is course mein Facebook Ads, Google Ads, Email Marketing, aur Funnel Building par practically mastery hasil karein. Ek ₹500 ke ad se ₹5000 ka revenue generate karne ka secret seekhein. Aap apna khud ka Marketing Agency start kar sakte hain ya top brands mein as a 'Marketing Head' job paa sakte hain jiska shuruati package hi bohot badhiya hota hai.
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">4.4</span>
+                            <span class="text-gray-500 text-xs font-semibold">(9,800 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="Advance Digital Marketing" data-hi="Advance Digital Marketing">Advance Digital Marketing</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 20 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 14 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-green-500 mr-1"></i> <span class="lang-text" data-en="Beginner" data-hi="Beginner">Beginner</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="Every business, big or small, wants online sales. In this course, achieve practical mastery over Facebook Ads, Google Ads, Email Marketing, and Funnel Building. Learn the secret of generating $500 in revenue from a $50 ad. You can start your own Marketing Agency or get a job as a 'Marketing Head' in top brands, which offers a great starting package." data-hi="Har ek business chahe chota ho ya bada, sab online sales chahte hain. Is course mein Facebook Ads, Google Ads, Email Marketing, aur Funnel Building par practically mastery hasil karein. Ek ₹500 ke ad se ₹5000 ka revenue generate karne ka secret seekhein. Aap apna khud ka Marketing Agency start kar sakte hain ya top brands mein as a 'Marketing Head' job paa sakte hain jiska shuruati package hi bohot badhiya hota hai.">
+                            Every business, big or small, wants online sales. In this course, achieve practical mastery over Facebook Ads, Google Ads, Email Marketing, and Funnel Building. Learn the secret of generating $500 in revenue from a $50 ad. You can start your own Marketing Agency or get a job as a 'Marketing Head' in top brands, which offers a great starting package.
+                        </div>
+                        <button class="see-more-btn text-yellow-600 text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=Ad+Expert&background=eab308&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">Ad Expert</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹4,499</p>
+                                <p class="text-xl font-black text-yellow-600 leading-none">₹899</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-yellow-500 transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Course 7 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-slide-up delay-200 lg:col-start-2 xl:col-start-auto overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&q=80" alt="AI Tools Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-teal-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fas fa-robot text-2xl text-teal-500"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-up delay-200 lg:col-start-2 xl:col-start-auto overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(20,184,166,0.15)] relative">
+                    <!-- Badge -->
+                    <div class="absolute top-4 right-4 z-20 bg-gradient-to-r from-teal-400 to-teal-600 text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg lang-text tracking-wide" data-en="FUTURE SKILL" data-hi="FUTURE SKILL">FUTURE SKILL</div>
+
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=400&q=80" alt="AI Tools Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-teal-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fas fa-robot text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">AI Tools & Prompts</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            "AI un logon ki job kha jayega jinhe AI chalana nahi aata." Ye course aapko ChatGPT, Midjourney, aur upcoming saare trending AI tools ka absolute master bana dega. Complex prompts likhna seekhein jisse aap ghanto ka technical, writing ya design ka kaam minutes mein automatically karwa saken. Corporate duniya mein aur remote foreign jobs mein ek AI expert ki value aaj kal sabse highest paid hai!
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">4.9</span>
+                            <span class="text-gray-500 text-xs font-semibold">(45,000 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="AI Tools & ChatGPT Master" data-hi="AI Tools & ChatGPT Master">AI Tools & ChatGPT Master</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 10 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 6 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-yellow-500 mr-1"></i> <span class="lang-text" data-en="All Levels" data-hi="All Levels">All Levels</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="'AI will replace those who don't know how to use AI.' This course will make you an absolute master of ChatGPT, Midjourney, and all upcoming trending AI tools. Learn to write complex prompts so you can automate hours of technical, writing, or design work in minutes. In the corporate world and remote foreign jobs, an AI expert is the highest-paid professional today!" data-hi="'AI un logon ki job kha jayega jinhe AI chalana nahi aata.' Ye course aapko ChatGPT, Midjourney, aur upcoming saare trending AI tools ka absolute master bana dega. Complex prompts likhna seekhein jisse aap ghanto ka technical, writing ya design ka kaam minutes mein automatically karwa saken. Corporate duniya mein aur remote foreign jobs mein ek AI expert ki value aaj kal sabse highest paid hai!">
+                            'AI will replace those who don't know how to use AI.' This course will make you an absolute master of ChatGPT, Midjourney, and all upcoming trending AI tools. Learn to write complex prompts so you can automate hours of technical, writing, or design work in minutes. In the corporate world and remote foreign jobs, an AI expert is the highest-paid professional today!
+                        </div>
+                        <button class="see-more-btn text-teal-600 text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=AI+Genius&background=14b8a6&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">AI Genius</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹2,999</p>
+                                <p class="text-xl font-black text-teal-600 leading-none">₹499</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-teal-500 transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Course 8 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-slide-up delay-300 overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" alt="Web Development Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-orange-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fas fa-code text-2xl text-orange-500"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-slide-up delay-300 overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(249,115,22,0.15)] relative">
+                    <!-- Badge -->
+                    <div class="absolute top-4 right-4 z-20 bg-gradient-to-r from-blue-400 to-indigo-500 text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg lang-text tracking-wide" data-en="TOP RATED" data-hi="TOP RATED">TOP RATED</div>
+
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" alt="Web Development Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-orange-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fas fa-code text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Web Development</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            Har startup aur company ki jaan, unki premium website aur apps! Coding sikhiye ekdam scratch se (HTML, CSS, JS) aur advance MERN Stack (MongoDB, Express, React, Node) tak. Stunning, super fast, aur modern websites banane ka hunar haasil karein. As a Full Stack Developer, aapko IT hub (Bangalore, Pune) ya foreign countries se lakho ke job offers bina kisi mushkil ke mil jayenge. Ye skill technical career ka gateway hai.
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">5.0</span>
+                            <span class="text-gray-500 text-xs font-semibold">(32,100 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="Full Stack Web Dev" data-hi="Full Stack Web Dev">Full Stack Web Dev</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 60 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 40 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-red-500 mr-1"></i> <span class="lang-text" data-en="Advance" data-hi="Advance">Advance</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="The lifeblood of every startup and company: their premium websites and apps! Learn coding entirely from scratch (HTML, CSS, JS) to the advanced MERN Stack (MongoDB, Express, React, Node). Acquire the skills to build stunning, super-fast, and modern websites. As a Full Stack Developer, you will easily get massive job offers from IT hubs or foreign countries. This skill is the gateway to a technical career." data-hi="Har startup aur company ki jaan, unki premium website aur apps! Coding sikhiye ekdam scratch se (HTML, CSS, JS) aur advance MERN Stack (MongoDB, Express, React, Node) tak. Stunning, super fast, aur modern websites banane ka hunar haasil karein. As a Full Stack Developer, aapko IT hub (Bangalore, Pune) ya foreign countries se lakho ke job offers bina kisi mushkil ke mil jayenge. Ye skill technical career ka gateway hai.">
+                            The lifeblood of every startup and company: their premium websites and apps! Learn coding entirely from scratch (HTML, CSS, JS) to the advanced MERN Stack (MongoDB, Express, React, Node). Acquire the skills to build stunning, super-fast, and modern websites. As a Full Stack Developer, you will easily get massive job offers from IT hubs or foreign countries. This skill is the gateway to a technical career.
+                        </div>
+                        <button class="see-more-btn text-orange-600 text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=Code+Master&background=f97316&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">Code Master</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹8,999</p>
+                                <p class="text-xl font-black text-orange-600 leading-none">₹1,999</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-orange-500 transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Course 9 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-zoom md:col-start-1 lg:col-start-2 xl:col-start-auto overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=400&q=80" alt="UI/UX Design Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fas fa-palette text-2xl text-indigo-500"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-zoom md:col-start-1 lg:col-start-2 xl:col-start-auto overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(99,102,241,0.15)] relative">
+                    
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=400&q=80" alt="UI/UX Design Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-indigo-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fas fa-palette text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">UI/UX & Graphics</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            Jab app ya website dikhne mein sundar aur use karne mein easy hoti hai, toh user khush hota hai. Yahi kaam hai ek UI/UX Designer ka! Figma, Photoshop, aur Illustrator jese premium softwares seekhein. World-class layouts, logos, aur interfaces banayein. Har modern tech company, Amazon se leke Zomato tak, top level UI/UX designers ko lakhon package de kar hire karti hai. Ye aane wale daur ka sabse cool profession hai!
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">4.3</span>
+                            <span class="text-gray-500 text-xs font-semibold">(6,500 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-pink text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-pink/20 text-brand-pink hover:bg-brand-pink hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="UI/UX & App Design" data-hi="UI/UX & App Design">UI/UX & App Design</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 25 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 18 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-green-500 mr-1"></i> <span class="lang-text" data-en="Beginner" data-hi="Beginner">Beginner</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="When an app or website looks beautiful and is easy to use, the user is happy. That is the job of a UI/UX Designer! Learn premium software like Figma, Photoshop, and Illustrator. Create world-class layouts, logos, and interfaces. Every modern tech company, from Amazon to top startups, hires top-level UI/UX designers with huge packages. This is the coolest profession of the coming era!" data-hi="Jab app ya website dikhne mein sundar aur use karne mein easy hoti hai, toh user khush hota hai. Yahi kaam hai ek UI/UX Designer ka! Figma, Photoshop, aur Illustrator jese premium softwares seekhein. World-class layouts, logos, aur interfaces banayein. Har modern tech company, Amazon se leke Zomato tak, top level UI/UX designers ko lakhon package de kar hire karti hai. Ye aane wale daur ka sabse cool profession hai!">
+                            When an app or website looks beautiful and is easy to use, the user is happy. That is the job of a UI/UX Designer! Learn premium software like Figma, Photoshop, and Illustrator. Create world-class layouts, logos, and interfaces. Every modern tech company, from Amazon to top startups, hires top-level UI/UX designers with huge packages. This is the coolest profession of the coming era!
+                        </div>
+                        <button class="see-more-btn text-indigo-600 text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=Design+Pro&background=6366f1&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">Design Pro</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹4,999</p>
+                                <p class="text-xl font-black text-indigo-600 leading-none">₹999</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-indigo-500 transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Course 10 -->
-                <div class="glass-card flex flex-col group scroll-anim anim-zoom delay-100 md:col-start-2 lg:col-start-3 xl:col-start-auto overflow-hidden">
-                    <div class="relative w-full h-56 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1455390582262-044cdead27d8?auto=format&fit=crop&w=400&q=80" alt="Copywriting Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-cyan-100 flex items-center justify-center shadow-lg border-4 border-white z-10">
-                            <i class="fas fa-pen-nib text-2xl text-cyan-500"></i>
+                <div class="glass-card flex flex-col group scroll-anim anim-zoom delay-100 md:col-start-2 lg:col-start-3 xl:col-start-auto overflow-hidden bg-white/70 border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(6,182,212,0.15)] relative">
+                    <!-- Badge -->
+                    <div class="absolute top-4 right-4 z-20 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-lg lang-text tracking-wide" data-en="BESTSELLER" data-hi="BESTSELLER">BESTSELLER</div>
+
+                    <div class="relative w-full h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1455390582262-044cdead27d8?auto=format&fit=crop&w=400&q=80" alt="Copywriting Course" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 w-12 h-12 rounded-xl bg-cyan-500/90 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30 z-10">
+                            <i class="fas fa-pen-nib text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6 pt-8 flex flex-col flex-1 text-left relative z-20 bg-white/40">
-                        <h3 class="text-xl font-extrabold mb-2 text-gray-900 text-center">Copywriting Mastery</h3>
-                        <div class="course-details text-gray-700 text-sm font-medium mb-2">
-                            Sabdo ki takat ko pehchane. Aise magical words likhna sikhein jo kisi ko bhi product kharidne pe majboor kar de. High-converting Facebook Ads, compelling emails aur persuasive landing pages ka complete blueprint. Ek badhiya copywriter ek single page likhne ka 50,000 se 1 Lakh rupaye tak charge karta hai. US market mein is skill ki sabse zyada talash ki ja rahi hai!
+                    <div class="p-6 flex flex-col flex-1 text-left relative z-20">
+                        <!-- Rating & Students -->
+                        <div class="flex items-center text-sm mb-3 gap-2">
+                            <div class="flex text-yellow-500 text-xs">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-900 font-extrabold">4.8</span>
+                            <span class="text-gray-500 text-xs font-semibold">(11,200 <span class="lang-text" data-en="students" data-hi="students">students</span>)</span>
                         </div>
-                        <button class="see-more-btn text-brand-blue text-sm font-bold w-full text-center mb-6 outline-none">See More <i class="fas fa-chevron-down"></i></button>
-                        <button class="enroll-btn mt-auto w-full py-2.5 rounded-xl bg-white border-2 border-brand-blue/20 text-brand-blue hover:bg-brand-blue hover:text-white transition-all font-bold shadow-sm">Enroll Now</button>
+
+                        <h3 class="text-xl font-extrabold mb-3 text-gray-900 leading-tight lang-text" data-en="Copywriting & Sales" data-hi="Copywriting & Sales">Copywriting & Sales</h3>
+                        
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap gap-2 mb-4 text-xs font-bold text-gray-600">
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-clock text-brand-pink mr-1"></i> 15 <span class="lang-text" data-en="Hrs" data-hi="Hrs">Hrs</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-book text-brand-blue mr-1"></i> 12 <span class="lang-text" data-en="Modules" data-hi="Modules">Modules</span></span>
+                            <span class="bg-gray-100 px-2 py-1 rounded border border-gray-200"><i class="fas fa-signal text-yellow-500 mr-1"></i> <span class="lang-text" data-en="All Levels" data-hi="All Levels">All Levels</span></span>
+                        </div>
+
+                        <div class="course-details text-gray-600 text-sm font-medium mb-2 lang-text" data-en="Recognize the power of words. Learn to write magical words that compel anyone to buy a product. A complete blueprint of high-converting Facebook Ads, compelling emails, and persuasive landing pages. A good copywriter charges $500 to $1000 just to write a single page. This skill is highly sought after in the US market!" data-hi="Sabdo ki takat ko pehchane. Aise magical words likhna sikhein jo kisi ko bhi product kharidne pe majboor kar de. High-converting Facebook Ads, compelling emails aur persuasive landing pages ka complete blueprint. Ek badhiya copywriter ek single page likhne ka 50,000 se 1 Lakh rupaye tak charge karta hai. US market mein is skill ki sabse zyada talash ki ja rahi hai!">
+                            Recognize the power of words. Learn to write magical words that compel anyone to buy a product. A complete blueprint of high-converting Facebook Ads, compelling emails, and persuasive landing pages. A good copywriter charges $500 to $1000 just to write a single page. This skill is highly sought after in the US market!
+                        </div>
+                        <button class="see-more-btn text-cyan-600 text-xs font-bold w-full text-left mb-4 outline-none">See More <i class="fas fa-chevron-down"></i></button>
+                        
+                        <div class="w-full h-[1px] bg-gray-200/80 my-2"></div>
+
+                        <!-- Instructor & Price -->
+                        <div class="flex justify-between items-end mb-5 mt-2">
+                            <div class="flex items-center gap-2">
+                                <img src="https://ui-avatars.com/api/?name=Sales+Copy&background=06b6d4&color=fff" alt="Instructor" class="w-9 h-9 rounded-full border-2 border-white shadow-sm">
+                                <div class="text-xs">
+                                    <p class="text-gray-500 font-medium"><span class="lang-text" data-en="By" data-hi="Dwara">By</span></p>
+                                    <p class="font-extrabold text-gray-900">Sales Copy</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-400 font-bold line-through mb-0.5">₹3,499</p>
+                                <p class="text-xl font-black text-cyan-600 leading-none">₹699</p>
+                            </div>
+                        </div>
+
+                        <button class="enroll-btn mt-auto w-full py-3.5 rounded-xl bg-gray-900 text-white hover:bg-cyan-500 transition-all font-extrabold shadow-md flex justify-center items-center gap-2">
+                            <i class="fas fa-shopping-cart"></i> <span class="lang-text" data-en="Enroll Now" data-hi="Enroll Now">Enroll Now</span>
+                        </button>
                     </div>
                 </div>
 
@@ -494,15 +872,18 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2 scroll-anim anim-slide-right">
-                    <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-gray-900">Traditional Study Se <br><span class="text-gradient">Advance Skills Tak</span></h2>
-                    <p class="text-gray-700 text-lg mb-6 leading-relaxed font-medium">
-                        Aaj kal har company un logon ko dhoond rahi hai jinke paas practical skills hain. Hamare courses aapko sirf theory nahi, balki real-world applications sikhate hain. Ek naya tajurba aur behtareen future aapka intezar kar raha hai.
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-gray-900">
+                        <span class="lang-text" data-en="From Traditional Study" data-hi="Traditional Study Se">From Traditional Study</span> <br>
+                        <span class="text-gradient lang-text" data-en="To Advance Skills" data-hi="Advance Skills Tak">To Advance Skills</span>
+                    </h2>
+                    <p class="text-gray-700 text-lg mb-6 leading-relaxed font-medium lang-text" data-en="Nowadays, every company is looking for people with practical skills. Our courses teach you not just theory, but real-world applications. A new experience and a bright future await you." data-hi="Aaj kal har company un logon ko dhoond rahi hai jinke paas practical skills hain. Hamare courses aapko sirf theory nahi, balki real-world applications sikhate hain. Ek naya tajurba aur behtareen future aapka intezar kar raha hai.">
+                        Nowadays, every company is looking for people with practical skills. Our courses teach you not just theory, but real-world applications. A new experience and a bright future await you.
                     </p>
                     <ul class="space-y-4 text-gray-800 font-semibold">
-                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform"><i class="fas fa-check-circle text-brand-pink mr-3 text-2xl drop-shadow-md"></i> 100% Practical & Project Based Learning</li>
-                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform delay-100"><i class="fas fa-check-circle text-brand-blue mr-3 text-2xl drop-shadow-md"></i> Hindi & Simple English (Hinglish) mein easy explanations</li>
-                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform delay-200"><i class="fas fa-check-circle text-brand-pink mr-3 text-2xl drop-shadow-md"></i> Lifetime Access & Community Support</li>
-                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform delay-300"><i class="fas fa-check-circle text-brand-blue mr-3 text-2xl drop-shadow-md"></i> Certificate of Completion for your Resume</li>
+                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform"><i class="fas fa-check-circle text-brand-pink mr-3 text-2xl drop-shadow-md"></i> <span class="lang-text" data-en="100% Practical & Project Based Learning" data-hi="100% Practical aur Project Based Learning">100% Practical & Project Based Learning</span></li>
+                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform delay-100"><i class="fas fa-check-circle text-brand-blue mr-3 text-2xl drop-shadow-md"></i> <span class="lang-text" data-en="Clear & Easy to Understand Explanations in English & Hindi" data-hi="Hindi aur English dono me aasan aur clear explanations">Clear & Easy to Understand Explanations in English & Hindi</span></li>
+                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform delay-200"><i class="fas fa-check-circle text-brand-pink mr-3 text-2xl drop-shadow-md"></i> <span class="lang-text" data-en="Lifetime Access & Community Support" data-hi="Lifetime Access & Community Support">Lifetime Access & Community Support</span></li>
+                        <li class="flex items-center p-3 glass-card hover:translate-x-2 transition-transform delay-300"><i class="fas fa-check-circle text-brand-blue mr-3 text-2xl drop-shadow-md"></i> <span class="lang-text" data-en="Certificate of Completion for your Resume" data-hi="Certificate of Completion for your Resume">Certificate of Completion for your Resume</span></li>
                     </ul>
                 </div>
                 
@@ -515,7 +896,7 @@
                                 <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
                                 <div class="w-3 h-3 rounded-full bg-green-400"></div>
                             </div>
-                            <span class="text-xs font-bold text-gray-500 uppercase tracking-widest">Student Portal</span>
+                            <span class="text-xs font-bold text-gray-500 uppercase tracking-widest lang-text" data-en="Student Portal" data-hi="Student Portal">Student Portal</span>
                         </div>
                         <div class="space-y-5">
                             <div class="h-10 bg-gradient-to-r from-brand-pink/20 to-brand-blue/20 rounded-lg w-3/4 animate-pulse"></div>
@@ -524,11 +905,11 @@
                             <div class="grid grid-cols-2 gap-4 mt-6">
                                 <div class="h-24 bg-gradient-to-br from-brand-pink/10 to-white rounded-xl border border-brand-pink/30 flex items-center justify-center flex-col shadow-inner hover:scale-105 transition-transform">
                                     <span class="text-3xl font-extrabold text-brand-pink"><i class="fas fa-star"></i></span>
-                                    <span class="text-sm font-bold text-gray-600 mt-1">Trending Courses</span>
+                                    <span class="text-sm font-bold text-gray-600 mt-1 lang-text" data-en="Trending Courses" data-hi="Trending Courses">Trending Courses</span>
                                 </div>
                                 <div class="h-24 bg-gradient-to-br from-brand-blue/10 to-white rounded-xl border border-brand-blue/30 flex items-center justify-center flex-col shadow-inner hover:scale-105 transition-transform">
                                     <span class="text-3xl font-extrabold text-brand-blue">24/7</span>
-                                    <span class="text-sm font-bold text-gray-600 mt-1">Live Support</span>
+                                    <span class="text-sm font-bold text-gray-600 mt-1 lang-text" data-en="Live Support" data-hi="Live Support">Live Support</span>
                                 </div>
                             </div>
                         </div>
@@ -542,8 +923,8 @@
     <section id="testimonials" class="py-20 relative z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 scroll-anim anim-slide-down">
-                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">Hamare Students Ki <span class="text-gradient">Success Stories</span></h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto font-medium">Dekhiye kaise SkillCourse ne hazaron students ka career aur zindagi badal di hai. Agla number aapka ho sakta hai!</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900"><span class="lang-text" data-en="Our Students'" data-hi="Hamare Students Ki">Our Students'</span> <span class="text-gradient lang-text" data-en="Success Stories" data-hi="Success Stories">Success Stories</span></h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto font-medium lang-text" data-en="See how SkillCourse has transformed the careers and lives of thousands of students. You could be next!" data-hi="Dekhiye kaise SkillCourse ne hazaron students ka career aur zindagi badal di hai. Agla number aapka ho sakta hai!">See how SkillCourse has transformed the careers and lives of thousands of students. You could be next!</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -554,10 +935,10 @@
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Student" class="w-16 h-16 rounded-full border-2 border-brand-pink object-cover mr-4">
                         <div>
                             <h4 class="font-bold text-gray-900">Rahul Sharma</h4>
-                            <p class="text-xs text-brand-pink font-semibold">Freelancer, ₹1Lakh+/month</p>
+                            <p class="text-xs text-brand-pink font-semibold lang-text" data-en="Freelancer, $2000+/month" data-hi="Freelancer, ₹1Lakh+/month">Freelancer, $2000+/month</p>
                         </div>
                     </div>
-                    <p class="text-gray-700 font-medium italic">"College ke baad job nahi mil rahi thi. Yahan se Freelancing aur UI/UX seekha, aaj mere paas US aur Dubai ke 4 clients hain. Life set hai!"</p>
+                    <p class="text-gray-700 font-medium italic lang-text" data-en='"I wasn&apos;t getting a job after college. I learned Freelancing and UI/UX here, and today I have 4 clients from the US and Dubai. Life is set!"' data-hi='"College ke baad job nahi mil rahi thi. Yahan se Freelancing aur UI/UX seekha, aaj mere paas US aur Dubai ke 4 clients hain. Life set hai!"'>"I wasn't getting a job after college. I learned Freelancing and UI/UX here, and today I have 4 clients from the US and Dubai. Life is set!"</p>
                     <div class="mt-4 flex text-yellow-500 text-sm">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
@@ -570,10 +951,10 @@
                         <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="Student" class="w-16 h-16 rounded-full border-2 border-brand-blue object-cover mr-4">
                         <div>
                             <h4 class="font-bold text-gray-900">Priya Singh</h4>
-                            <p class="text-xs text-brand-blue font-semibold">Digital Marketing Manager</p>
+                            <p class="text-xs text-brand-blue font-semibold lang-text" data-en="Digital Marketing Manager" data-hi="Digital Marketing Manager">Digital Marketing Manager</p>
                         </div>
                     </div>
-                    <p class="text-gray-700 font-medium italic">"Mera marketing course ka experience amazing tha. Practical ads run karna seekha, aur abhi main ek top agency me as a manager kaam kar rahi hu."</p>
+                    <p class="text-gray-700 font-medium italic lang-text" data-en='"My experience with the marketing course was amazing. I learned to run practical ads, and now I&apos;m working as a manager in a top agency."' data-hi='"Mera marketing course ka experience amazing tha. Practical ads run karna seekha, aur abhi main ek top agency me as a manager kaam kar rahi hu."'>"My experience with the marketing course was amazing. I learned to run practical ads, and now I'm working as a manager in a top agency."</p>
                     <div class="mt-4 flex text-yellow-500 text-sm">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
@@ -586,10 +967,10 @@
                         <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" alt="Student" class="w-16 h-16 rounded-full border-2 border-green-500 object-cover mr-4">
                         <div>
                             <h4 class="font-bold text-gray-900">Amit Verma</h4>
-                            <p class="text-xs text-green-600 font-semibold">YouTuber (100k+ Subs)</p>
+                            <p class="text-xs text-green-600 font-semibold lang-text" data-en="YouTuber (100k+ Subs)" data-hi="YouTuber (100k+ Subs)">YouTuber (100k+ Subs)</p>
                         </div>
                     </div>
-                    <p class="text-gray-700 font-medium italic">"YouTube mastery course ne mere channel ko boost kiya. SEO aur thumbnail ki tricks se mere views 10x badh gaye. Highly recommended!"</p>
+                    <p class="text-gray-700 font-medium italic lang-text" data-en='"The YouTube mastery course boosted my channel. The SEO and thumbnail tricks increased my views 10x. Highly recommended!"' data-hi='"YouTube mastery course ne mere channel ko boost kiya. SEO aur thumbnail ki tricks se mere views 10x badh gaye. Highly recommended!"'>"The YouTube mastery course boosted my channel. The SEO and thumbnail tricks increased my views 10x. Highly recommended!"</p>
                     <div class="mt-4 flex text-yellow-500 text-sm">
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
                     </div>
@@ -602,10 +983,10 @@
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <div class="text-left max-w-lg">
-                    <h3 class="text-2xl font-extrabold text-gray-900 mb-2">100% Risk-Free Guarantee</h3>
-                    <p class="text-gray-700 font-medium">Agar aapko lagta hai ki ye course aapke liye nahi hai, toh 7 din ke andar apne pure paise wapas lijiye. <strong>No questions asked.</strong> Humari priority aapki growth hai.</p>
+                    <h3 class="text-2xl font-extrabold text-gray-900 mb-2 lang-text" data-en="100% Risk-Free Guarantee" data-hi="100% Risk-Free Guarantee">100% Risk-Free Guarantee</h3>
+                    <p class="text-gray-700 font-medium lang-text" data-en="If you feel this course isn't for you, get a full refund within 7 days. <strong>No questions asked.</strong> Your growth is our priority." data-hi="Agar aapko lagta hai ki ye course aapke liye nahi hai, toh 7 din ke andar apne pure paise wapas lijiye. <strong>No questions asked.</strong> Humari priority aapki growth hai.">If you feel this course isn't for you, get a full refund within 7 days. <strong>No questions asked.</strong> Your growth is our priority.</p>
                 </div>
-                <button class="enroll-btn bg-gradient-to-r from-brand-pink to-brand-blue text-white px-8 py-4 rounded-xl text-lg font-bold transition-all hover:scale-105 hover:shadow-[0_10px_30px_rgba(255,64,129,0.4)] whitespace-nowrap shadow-md">
+                <button class="enroll-btn lang-text bg-gradient-to-r from-brand-pink to-brand-blue text-white px-8 py-4 rounded-xl text-lg font-bold transition-all hover:scale-105 hover:shadow-[0_10px_30px_rgba(255,64,129,0.4)] whitespace-nowrap shadow-md" data-en="Claim Risk-Free Offer" data-hi="Claim Risk-Free Offer">
                     Claim Risk-Free Offer
                 </button>
             </div>
@@ -616,60 +997,63 @@
     <section id="faq" class="py-20 relative z-10 bg-white/20 backdrop-blur-sm border-t border-white/40 shadow-[0_-10px_40px_rgba(0,0,0,0.02)]">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 scroll-anim anim-slide-down">
-                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">Aksar Puche Jaane Wale <span class="text-gradient">Sawal (FAQs)</span></h2>
-                <p class="text-gray-600 text-lg font-medium">Enroll karne se pehle koi doubt hai? Yahan aapke har sawal ka seedha jawab hai.</p>
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">
+                    <span class="lang-text" data-en="Frequently Asked" data-hi="Aksar Puche Jaane Wale">Frequently Asked</span> 
+                    <span class="text-gradient lang-text" data-en="Questions (FAQs)" data-hi="Sawal (FAQs)">Questions (FAQs)</span>
+                </h2>
+                <p class="text-gray-600 text-lg font-medium lang-text" data-en="Have any doubts before enrolling? Here are straight answers to all your questions." data-hi="Enroll karne se pehle koi doubt hai? Yahan aapke har sawal ka seedha jawab hai.">Have any doubts before enrolling? Here are straight answers to all your questions.</p>
             </div>
 
             <div class="space-y-4">
                 <!-- FAQ Item 1 -->
                 <div class="faq-item glass-card p-6 cursor-pointer scroll-anim anim-slide-up hover:!translate-y-0 hover:!scale-100">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-extrabold text-gray-900 text-lg">1. Kya mujhe pehle se koi knowledge aani chahiye?</h3>
+                        <h3 class="font-extrabold text-gray-900 text-lg lang-text" data-en="1. Do I need any prior knowledge?" data-hi="1. Kya mujhe pehle se koi knowledge aani chahiye?">1. Do I need any prior knowledge?</h3>
                         <div class="w-8 h-8 rounded-full bg-brand-pink/10 flex items-center justify-center text-brand-pink transition-transform duration-300 faq-icon">
                             <i class="fas fa-plus"></i>
                         </div>
                     </div>
                     <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300">
-                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4">Bilkul nahi! Hamare sabhi courses <strong>Absolute Beginner to Advance</strong> level tak design kiye gaye hain. Agar aapko is field ka 'A, B, C' bhi nahi aata, tab bhi aap asaani se seekh jayenge.</p>
+                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4 lang-text" data-en="Not at all! All our courses are designed from Absolute Beginner to Advance level. Even if you don't know the 'A, B, C' of this field, you will learn easily." data-hi="Bilkul nahi! Hamare sabhi courses Absolute Beginner to Advance level tak design kiye gaye hain. Agar aapko is field ka 'A, B, C' bhi nahi aata, tab bhi aap asaani se seekh jayenge.">Not at all! All our courses are designed from Absolute Beginner to Advance level. Even if you don't know the 'A, B, C' of this field, you will learn easily.</p>
                     </div>
                 </div>
 
                 <!-- FAQ Item 2 -->
                 <div class="faq-item glass-card p-6 cursor-pointer scroll-anim anim-slide-up delay-100 hover:!translate-y-0 hover:!scale-100">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-extrabold text-gray-900 text-lg">2. Course ki validity (Access) kitne dino tak rahegi?</h3>
+                        <h3 class="font-extrabold text-gray-900 text-lg lang-text" data-en="2. How long is the course validity (Access)?" data-hi="2. Course ki validity (Access) kitne dino tak rahegi?">2. How long is the course validity (Access)?</h3>
                         <div class="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue transition-transform duration-300 faq-icon">
                             <i class="fas fa-plus"></i>
                         </div>
                     </div>
                     <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300">
-                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4">Aapko <strong>Lifetime Access</strong> milta hai! Ek baar enroll karne ke baad aap in premium videos ko kabhi bhi, kitni bhi baar dekh sakte hain. Future mein aane wale saare updates bhi free milenge.</p>
+                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4 lang-text" data-en="You get Lifetime Access! Once enrolled, you can watch these premium videos anytime, as many times as you want. All future updates will also be free." data-hi="Aapko Lifetime Access milta hai! Ek baar enroll karne ke baad aap in premium videos ko kabhi bhi, kitni bhi baar dekh sakte hain. Future mein aane wale saare updates bhi free milenge.">You get Lifetime Access! Once enrolled, you can watch these premium videos anytime, as many times as you want. All future updates will also be free.</p>
                     </div>
                 </div>
 
                 <!-- FAQ Item 3 -->
                 <div class="faq-item glass-card p-6 cursor-pointer scroll-anim anim-slide-up delay-200 hover:!translate-y-0 hover:!scale-100">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-extrabold text-gray-900 text-lg">3. Kya course complete karne par Certificate milega?</h3>
+                        <h3 class="font-extrabold text-gray-900 text-lg lang-text" data-en="3. Will I get a Certificate upon completing the course?" data-hi="3. Kya course complete karne par Certificate milega?">3. Will I get a Certificate upon completing the course?</h3>
                         <div class="w-8 h-8 rounded-full bg-brand-pink/10 flex items-center justify-center text-brand-pink transition-transform duration-300 faq-icon">
                             <i class="fas fa-plus"></i>
                         </div>
                     </div>
                     <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300">
-                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4">Haan, definitely! Har course ke successful completion par aapko ek industry-recognized aur <strong>Verified Certificate</strong> milega jise aap apne Resume aur LinkedIn profile par proudly showcase kar sakte hain.</p>
+                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4 lang-text" data-en="Yes, definitely! Upon successful completion of every course, you will receive an industry-recognized and Verified Certificate that you can proudly showcase on your Resume and LinkedIn profile." data-hi="Haan, definitely! Har course ke successful completion par aapko ek industry-recognized aur Verified Certificate milega jise aap apne Resume aur LinkedIn profile par proudly showcase kar sakte hain.">Yes, definitely! Upon successful completion of every course, you will receive an industry-recognized and Verified Certificate that you can proudly showcase on your Resume and LinkedIn profile.</p>
                     </div>
                 </div>
 
                 <!-- FAQ Item 4 -->
-                <div class="faq-item glass-card p-6 cursor-pointer scroll-anim anim-slide-up delay-300 hover:!translate-y-0 hover:!scale-100">
+                <div class="faq-item glass-card p-6 cursor-pointer scroll-anim hover:!translate-y-0 hover:!scale-100">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-extrabold text-gray-900 text-lg">4. Kya main in courses ko apne Mobile par dekh sakta hu?</h3>
+                        <h3 class="font-extrabold text-gray-900 text-lg lang-text" data-en="4. Can I watch these courses on my Mobile?" data-hi="4. Kya main in courses ko apne Mobile par dekh sakta hu?">4. Can I watch these courses on my Mobile?</h3>
                         <div class="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue transition-transform duration-300 faq-icon">
                             <i class="fas fa-plus"></i>
                         </div>
                     </div>
                     <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300">
-                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4">Haan 100%! Hamara platform puri tarah se mobile friendly hai. Laptop na ho tab bhi aap travel karte waqt ya aaram karte hue apne smartphone se asaani se seekh sakte hain.</p>
+                        <p class="pt-4 text-gray-600 font-medium border-t border-gray-200 mt-4 lang-text" data-en="Yes, 100%! Our platform is fully mobile-friendly. Even if you don't have a laptop, you can easily learn from your smartphone while traveling or relaxing." data-hi="Haan 100%! Hamara platform puri tarah se mobile friendly hai. Laptop na ho tab bhi aap travel karte waqt ya aaram karte hue apne smartphone se asaani se seekh sakte hain.">Yes, 100%! Our platform is fully mobile-friendly. Even if you don't have a laptop, you can easily learn from your smartphone while traveling or relaxing.</p>
                     </div>
                 </div>
             </div>
@@ -677,34 +1061,74 @@
     </section>
 
     <!-- Footer -->
-    <footer class="relative z-10 pt-16 pb-8 bg-white/50 backdrop-blur-lg border-t border-white mt-10">
+    <footer class="relative z-10 pt-20 pb-10 bg-white/70 backdrop-blur-xl border-t border-white mt-10 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 scroll-anim anim-slide-up">
-                <div class="col-span-1 md:col-span-2">
-                    <span class="text-3xl font-extrabold tracking-wider text-gray-900 mb-4 block">Skill<span class="text-brand-pink">Course</span></span>
-                    <p class="text-gray-600 font-medium mt-4 max-w-sm">Apne sapno ko udaan dein. Aaj hi high-income digital skills sikhein aur apne career ko naye mukam par le jayein.</p>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+                <!-- Col 1: Brand & About -->
                 <div>
-                    <h4 class="text-xl font-extrabold mb-4 text-gray-900">Quick Links</h4>
-                    <ul class="space-y-2 font-semibold text-gray-600">
-                        <li><a href="#" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-angle-right mr-2 text-sm text-brand-blue"></i> Home</a></li>
-                        <li><a href="#courses" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-angle-right mr-2 text-sm text-brand-blue"></i> All Courses</a></li>
-                        <li><a href="#" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-angle-right mr-2 text-sm text-brand-blue"></i> Success Stories</a></li>
-                        <li><a href="#" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-angle-right mr-2 text-sm text-brand-blue"></i> Contact Us</a></li>
+                    <span class="text-3xl font-extrabold tracking-wider text-gray-900 mb-6 block">Skill<span class="text-brand-blue">Course</span></span>
+                    <p class="text-gray-600 font-medium leading-relaxed mb-6 lang-text" data-en="Give wings to your dreams. Learn high-income digital skills today and take your career to new heights." data-hi="Apne sapno ko udaan dein. Aaj hi high-income digital skills sikhein aur apne career ko naye mukam par le jayein.">Give wings to your dreams. Learn high-income digital skills today and take your career to new heights.</p>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div>
+                    <h4 class="text-xl font-extrabold mb-6 text-gray-900 lang-text border-b-2 border-brand-pink pb-2 inline-block" data-en="Quick Links" data-hi="Quick Links">Quick Links</h4>
+                    <ul class="space-y-3 font-semibold text-gray-600">
+                        <li><a href="#home" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-chevron-right mr-2 text-xs text-brand-blue"></i> <span class="lang-text" data-en="Home" data-hi="Home">Home</span></a></li>
+                        <li><a href="#courses" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-chevron-right mr-2 text-xs text-brand-blue"></i> <span class="lang-text" data-en="All Courses" data-hi="All Courses">All Courses</span></a></li>
+                        <li><a href="#testimonials" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-chevron-right mr-2 text-xs text-brand-blue"></i> <span class="lang-text" data-en="Success Stories" data-hi="Success Stories">Success Stories</span></a></li>
+                        <li><a href="#faq" class="hover:text-brand-pink transition-colors flex items-center"><i class="fas fa-chevron-right mr-2 text-xs text-brand-blue"></i> <span class="lang-text" data-en="FAQs" data-hi="FAQs">FAQs</span></a></li>
                     </ul>
                 </div>
+
+                <!-- Col 3: Contact Info -->
                 <div>
-                    <h4 class="text-xl font-extrabold mb-4 text-gray-900">Follow Us</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-brand-pink hover:bg-brand-pink hover:text-white hover:-translate-y-1 transition-all text-xl"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white hover:-translate-y-1 transition-all text-xl"><i class="fab fa-youtube"></i></a>
-                        <a href="#" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-brand-blue hover:bg-brand-blue hover:text-white hover:-translate-y-1 transition-all text-xl"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-gray-800 hover:bg-gray-900 hover:text-white hover:-translate-y-1 transition-all text-xl"><i class="fab fa-x-twitter"></i></a>
+                    <h4 class="text-xl font-extrabold mb-6 text-gray-900 lang-text border-b-2 border-brand-blue pb-2 inline-block" data-en="Contact Us" data-hi="Sampark Karein">Contact Us</h4>
+                    <ul class="space-y-4 font-semibold text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-brand-pink"></i> 
+                            <span class="lang-text" data-en="123 Tech Park, Connaught Place, New Delhi - 110001" data-hi="123 Tech Park, Connaught Place, New Delhi - 110001">123 Tech Park, Connaught Place, New Delhi - 110001</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-3 text-brand-blue"></i> 
+                            <span>+91 98765 43210</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-brand-pink"></i> 
+                            <span>support@skillcourse.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter & Socials -->
+                <div>
+                    <h4 class="text-xl font-extrabold mb-6 text-gray-900 lang-text border-b-2 border-green-500 pb-2 inline-block" data-en="Join Newsletter" data-hi="Newsletter Join Karein">Join Newsletter</h4>
+                    <p class="text-gray-600 text-sm font-medium mb-4 lang-text" data-en="Get the latest updates and special offers directly in your inbox." data-hi="Naye updates aur special offers seedhe apne inbox me payein.">Get the latest updates and special offers directly in your inbox.</p>
+                    <form class="flex mb-6 shadow-sm" onsubmit="event.preventDefault()">
+                        <input type="email" required placeholder="Your Email" class="w-full px-4 py-2.5 rounded-l-xl border border-gray-300 focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 lang-input text-sm" data-en-placeholder="Your Email" data-hi-placeholder="Aapka Email">
+                        <button type="submit" class="bg-gradient-to-r from-brand-blue to-blue-600 text-white px-5 py-2.5 rounded-r-xl hover:shadow-lg transition-all font-bold"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+
+                    <h4 class="text-sm font-extrabold mb-3 text-gray-900 lang-text" data-en="Follow Us" data-hi="Follow Us">Follow Us</h4>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-pink hover:bg-brand-pink hover:text-white hover:-translate-y-1 transition-all text-lg"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white hover:-translate-y-1 transition-all text-lg"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-brand-blue hover:bg-brand-blue hover:text-white hover:-translate-y-1 transition-all text-lg"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-blue-400 hover:bg-blue-500 hover:text-white hover:-translate-y-1 transition-all text-lg"><i class="fab fa-twitter"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="text-center text-gray-500 font-medium text-sm border-t border-gray-300 pt-8 scroll-anim anim-zoom">
-                &copy; 2026 SkillCourse. Designed for a Bright Future.
+
+            <!-- Bottom Bar -->
+            <div class="flex flex-col md:flex-row justify-between items-center border-t border-gray-300/60 pt-8">
+                <div class="text-gray-500 font-semibold text-sm mb-4 md:mb-0">
+                    &copy; 2026 SkillCourse. <span class="lang-text" data-en="All rights reserved." data-hi="Sabhi adhikar surakshit.">All rights reserved.</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4 md:gap-8 text-sm font-bold text-gray-500">
+                    <a href="#" class="hover:text-brand-pink transition-colors lang-text" data-en="Privacy Policy" data-hi="Privacy Policy">Privacy Policy</a>
+                    <a href="#" class="hover:text-brand-blue transition-colors lang-text" data-en="Terms of Service" data-hi="Terms of Service">Terms of Service</a>
+                    <a href="#" class="hover:text-green-500 transition-colors lang-text" data-en="Refund Policy" data-hi="Refund Policy">Refund Policy</a>
+                </div>
             </div>
         </div>
     </footer>
@@ -719,23 +1143,23 @@
             </button>
             
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back!</h2>
-                <p class="text-gray-600 font-medium">Course mein enroll karne ke liye login karein.</p>
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-2 lang-text" data-en="Welcome Back!" data-hi="Welcome Back!">Welcome Back!</h2>
+                <p class="text-gray-600 font-medium lang-text" data-en="Login to enroll in the course." data-hi="Course mein enroll karne ke liye login karein.">Login to enroll in the course.</p>
             </div>
 
             <form id="login-form" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-2 lang-text" data-en="Email Address" data-hi="Email Address">Email Address</label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
                             <i class="fas fa-envelope"></i>
                         </span>
-                        <input type="email" required class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:border-brand-pink focus:ring-4 focus:ring-brand-pink/20 outline-none transition-all bg-white shadow-inner" placeholder="Aapka email...">
+                        <input type="email" required class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-300 focus:border-brand-pink focus:ring-4 focus:ring-brand-pink/20 outline-none transition-all bg-white shadow-inner lang-input" data-en-placeholder="Your email..." data-hi-placeholder="Aapka email..." placeholder="Your email...">
                     </div>
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
+                    <label class="block text-sm font-bold text-gray-700 mb-2 lang-text" data-en="Password" data-hi="Password">Password</label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
                             <i class="fas fa-lock"></i>
@@ -746,15 +1170,15 @@
 
                 <!-- Error Message Alert -->
                 <div id="login-error" class="hidden bg-red-100/80 border border-red-200 text-red-600 text-sm font-bold p-3 rounded-lg text-center animate-pulse shadow-sm">
-                    <i class="fas fa-exclamation-circle mr-1 text-lg"></i> Invalid Email ya Password. Kripya sahi details dalein.
+                    <i class="fas fa-exclamation-circle mr-1 text-lg"></i> <span class="lang-text" data-en="Invalid Email or Password. Please enter correct details." data-hi="Invalid Email ya Password. Kripya sahi details dalein.">Invalid Email or Password. Please enter correct details.</span>
                 </div>
 
                 <button type="submit" class="w-full mt-2 py-3.5 bg-gradient-to-r from-brand-pink to-brand-blue text-white rounded-xl font-extrabold text-lg hover:shadow-[0_10px_20px_rgba(255,64,129,0.3)] hover:-translate-y-1 transition-all duration-300 flex justify-center items-center">
-                    <i class="fas fa-sign-in-alt mr-2"></i> Login & Enroll
+                    <i class="fas fa-sign-in-alt mr-2"></i> <span class="lang-text" data-en="Login & Enroll" data-hi="Login & Enroll">Login & Enroll</span>
                 </button>
                 
                 <p class="text-center text-sm text-gray-500 mt-4 font-medium">
-                    Naye user hain? <a href="#" class="text-brand-blue hover:text-brand-pink transition-colors font-bold underline">Account banayein</a>
+                    <span class="lang-text" data-en="New user?" data-hi="Naye user hain?">New user?</span> <a href="#" class="text-brand-blue hover:text-brand-pink transition-colors font-bold underline lang-text" data-en="Create an account" data-hi="Account banayein">Create an account</a>
                 </p>
             </form>
         </div>
@@ -762,6 +1186,63 @@
 
     <!-- Scripts for Animations, 3D & Modals -->
     <script>
+        // ----------------------------------------------------
+        // LANGUAGE TOGGLE LOGIC
+        // ----------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentLang = 'en'; // Default to English
+            const langBtn = document.getElementById('lang-toggle-btn');
+            const langBtnMob = document.getElementById('lang-toggle-btn-mob');
+            const langTexts = document.querySelectorAll('.lang-text');
+            const langInputs = document.querySelectorAll('.lang-input');
+            
+            const updateLanguage = () => {
+                // Update Badges
+                const enBadges = document.querySelectorAll('.lang-en-badge');
+                const hiBadges = document.querySelectorAll('.lang-hi-badge');
+                
+                if(currentLang === 'en') {
+                    enBadges.forEach(b => { b.classList.add('bg-white', 'shadow', 'text-brand-blue'); b.classList.remove('text-gray-500'); });
+                    hiBadges.forEach(b => { b.classList.remove('bg-white', 'shadow', 'text-brand-pink'); b.classList.add('text-gray-500'); });
+                } else {
+                    hiBadges.forEach(b => { b.classList.add('bg-white', 'shadow', 'text-brand-pink'); b.classList.remove('text-gray-500'); });
+                    enBadges.forEach(b => { b.classList.remove('bg-white', 'shadow', 'text-brand-blue'); b.classList.add('text-gray-500'); });
+                }
+
+                // Update text content
+                langTexts.forEach(el => {
+                    if (el.hasAttribute(`data-${currentLang}`)) {
+                        el.innerHTML = el.getAttribute(`data-${currentLang}`);
+                    }
+                });
+
+                // Update input placeholders
+                langInputs.forEach(el => {
+                    if (el.hasAttribute(`data-${currentLang}-placeholder`)) {
+                        el.setAttribute('placeholder', el.getAttribute(`data-${currentLang}-placeholder`));
+                    }
+                });
+
+                // Update custom UI like "See More" buttons logic
+                document.querySelectorAll('.see-more-btn').forEach(btn => {
+                    const contentDiv = btn.previousElementSibling;
+                    if(contentDiv.classList.contains('expanded')) {
+                        btn.innerHTML = currentLang === 'en' ? 'See Less <i class="fas fa-chevron-up"></i>' : 'Kam Dekhein <i class="fas fa-chevron-up"></i>';
+                    } else {
+                        btn.innerHTML = currentLang === 'en' ? 'See More <i class="fas fa-chevron-down"></i>' : 'Aur Dekhein <i class="fas fa-chevron-down"></i>';
+                    }
+                });
+            };
+
+            const toggleLang = () => {
+                currentLang = currentLang === 'en' ? 'hi' : 'en';
+                updateLanguage();
+            };
+
+            langBtn.addEventListener('click', toggleLang);
+            langBtnMob.addEventListener('click', toggleLang);
+        });
+
         // ----------------------------------------------------
         // "SEE MORE" BUTTON LOGIC (Marketing descriptions)
         // ----------------------------------------------------
@@ -771,13 +1252,15 @@
             seeMoreBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     const contentDiv = this.previousElementSibling; // The div with .course-details
+                    // Need to check current state from DOM since scope might not have direct access to currentLang
+                    const isEnglish = document.querySelector('.lang-en-badge').classList.contains('bg-white');
                     
                     if(contentDiv.classList.contains('expanded')) {
                         contentDiv.classList.remove('expanded');
-                        this.innerHTML = 'See More <i class="fas fa-chevron-down"></i>';
+                        this.innerHTML = isEnglish ? 'See More <i class="fas fa-chevron-down"></i>' : 'Aur Dekhein <i class="fas fa-chevron-down"></i>';
                     } else {
                         contentDiv.classList.add('expanded');
-                        this.innerHTML = 'See Less <i class="fas fa-chevron-up"></i>';
+                        this.innerHTML = isEnglish ? 'See Less <i class="fas fa-chevron-up"></i>' : 'Kam Dekhein <i class="fas fa-chevron-up"></i>';
                     }
                 });
             });
@@ -872,28 +1355,6 @@
                     loginModalContent.classList.remove('animate-shake');
                 }, 500);
             });
-        });
-
-        // ----------------------------------------------------
-        // 1. SCROLL INTERSECTION OBSERVER (For scroll animations)
-        // ----------------------------------------------------
-        document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    }
-                });
-            }, observerOptions);
-
-            const animElements = document.querySelectorAll('.scroll-anim');
-            animElements.forEach(el => observer.observe(el));
         });
 
         // ----------------------------------------------------
